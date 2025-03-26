@@ -1,0 +1,78 @@
+﻿@model EasyAppointments.Services.DTOs.AdminDTOs.UpdateAdminDto
+<div class="row">
+    <div class="col-sm">
+        <form id="FrmAdmin">
+            @Html.HiddenFor(a => a.Id)
+            <div class="form-group">
+                @Html.LabelFor(a => a.FirstName)
+                @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", placeholder = "Enter First Name" })
+                @Html.ValidationMessageFor(a => a.FirstName, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.LastName)
+                @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                @Html.ValidationMessageFor(a => a.LastName, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.UserName)
+                @Html.TextBoxFor(a => a.UserName, new { @class = "form-control", placeholder = "Enter UserName" })
+                @Html.ValidationMessageFor(a => a.UserName, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.Password)
+                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.Contact)
+                @Html.TextBoxFor(a => a.Contact, new { @class = "form-control", placeholder = "Enter Contact" })
+                @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.Email)
+                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", placeholder = "Enter Email" })
+                @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.Address)
+                @Html.TextBoxFor(a => a.Address, new { @class = "form-control", placeholder = "Enter Address" })
+                @Html.ValidationMessageFor(a => a.Address, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(a => a.Image)
+                @if (Model?.Id > 0)
+                {
+                    @Html.TextBoxFor(a => a.Image, new { @class = "form-control", Type = "file", accept = "image/*", data_default_file = Convert.ToBase64String(Model.Image) })
+                }
+                else
+                {
+                    @Html.TextBoxFor(a => a.Image, new { @class = "form-control", Type = "file", accept = "image/*" })
+                }
+                @Html.ValidationMessageFor(a => a.Image, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                @Html.DropDownListFor(a => a.Status, new List<SelectListItem> { new SelectListItem { Text = "Active", Value = "0" }, new SelectListItem { Text = "InActive", Value = "1" } }, "Select status", new { @class = "form-control" })
+                @Html.ValidationMessageFor(a => a.Status, "", new { @style = "color:red" })
+            </div>
+            <div class="form-group">
+                <div>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" onclick="showConfirmationDialog('Submittion',0)">
+                        Submit
+                    </button>
+                    <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                        Cancel
+                    </button>
+                    <br>
+                    <hr>
+                    <button type="button" id="ButtonText" class="btn btn-info" onclick="getAdmins()">Show List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+        $('#Image').dropify();
+        });
+    </script>
+</div>

@@ -1,0 +1,78 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <div class="account-content">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-12 col-lg-6 login-right">
+                        <div class="login-header">
+                            <h3>Login <span>Doctor</span></h3>
+                        </div>
+                        <form id="FrmLogin" method="post">
+                            <div class="mb-3">
+                                @Html.TextBoxFor(a => a.Contact, new { @class = "form-control", placeholder = "Enter phone number" })
+                                @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
+                            </div>
+                            <div class="mb-3">
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                                @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+                            </div>
+                            <div class="text-end">
+                                <a class="forgot-link" href="forgot-password.html">Forgot Password ?</a>
+                            </div>
+                            <div style="display:flex">
+                                <button class="btn btn-primary w-50" type="button" onclick="login()" style="margin-right:5px">Login</button>
+                                <button class="btn btn-secondary w-50" type="reset">Cancel</button>
+                            </div>
+
+                            <div class="text-center dont-have">Don’t have an account? <a href="/Doctor/Doctor/Index">Register</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @section LoadFiles {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function login(){
+                if($("#FrmLogin").valid()){
+                    var frmData=new FormData(document.getElementById('FrmLogin'));
+                    $.ajax({
+                    type:'post',
+                    url:'/Doctor/Doctor/CheckDoctor',
+                    processData:false,
+                    contentType:false,
+                    data:frmData,
+                    success:function(result){
+                   if (result == true) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Login successfully.`,
+                                    'success'
+                                );
+                            }
+                            else if (result == false) {
+                                Swal.fire(
+                                    'error',
+                                    `Login Failed.`,
+                                    'error'
+                                );
+                            }
+
+                    }
+                    });
+                }
+            }
+        </script>
+    }
+</div>

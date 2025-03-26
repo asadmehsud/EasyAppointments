@@ -1,0 +1,58 @@
+﻿@model List<EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto>
+@if (Model.FirstOrDefault()!.Status == (int)EasyAppointments.Services.DoctorServices.CustomClasses.ActionType.Pending)
+{
+    <h3>Pending Doctors</h3>
+    <p>These doctors are in Pending.</p>
+}
+else if (Model.FirstOrDefault()!.Status == (int)EasyAppointments.Areas.Doctor.CustomClasses.ActionType.Approved)
+{
+    <h3>Approved Doctors</h3>
+    <p>These doctors are Approved.</p>
+}
+else
+{
+    <h3> Rejected Doctors </h3>
+    <p>These doctors are in Rejected.</p>
+}
+<table class="datatable table table-hover table-center mb-0 dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+    <thead>
+        <tr role="row">
+            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 137.333px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
+            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 217.333px;" aria-label="Position: activate to sort column ascending">Contact</th>
+            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 103.333px;" aria-label="Office: activate to sort column ascending">Email</th>
+            <th>CNIC</th>
+            <th>Address</th>
+            <th>Image</th>
+            <th>Docs</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model!.Count > 0)
+        {
+            @foreach (var item in Model!)
+            {
+                <tr role="row" class="even">
+                    <td tabindex="0" class="sorting_1">@item.FirstName @item.LastName</td>
+                    <td>@item.Contact</td>
+                    <td>@item.Email</td>
+                    <td>@item.CNIC</td>
+                    <td>@item.Address</td>
+                    <td><img src="data:image/*;base64,@Convert.ToBase64String(item.Image)" alt="Doctor Image" style="width:70px;height:50px"></td>
+                    <td><a href="@Url.Action("ViewPDF", "DoctorRequests", new { id = item.Id })" target="_blank">View PDF</a></td>
+                    <td>
+                        <select id="ddlStatus_@item.Id" onchange="ChangeStatus(@item.Id)">
+                            <option>Select Status</option>
+                            <option value="1">Approve</option>
+                            <option value="2">Reject</option>
+                        </select>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>No Record Found.</tr>
+        }
+    </tbody>
+</table>

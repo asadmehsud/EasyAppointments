@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EasyAppointments.Services.DTOs.AdminDTOs.DayDto>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="table-responsive">
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="row">
+
+                                <div class="col-sm-12 col-md-6">
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="datatable table table-hover table-center mb-0 dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Patient ID: activate to sort column descending" style="width: 67.1979px;">ID</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Patient Name: activate to sort column ascending" style="width: 137.365px;">WeekDay</th>
+                                                    <th>Action</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr role="row" class="odd">
+
+                                                        <td>@item.Id</td>
+                                                        <td>@item.WeekDay</td>
+                                                        <td>
+                                                            <button class="btn btn-outline-primary" onclick="updateDay(@item.Id)">  <i class="fas fa-edit"></i> </button>
+                                                            <button class="btn btn-outline-danger" onclick="showConfirmationDialog('Deletion',@item.Id);"><i class="fa fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $("#DataTables_Table_0").DataTable();
+        });
+    </script>
+</div>

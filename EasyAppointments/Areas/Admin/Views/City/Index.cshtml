@@ -1,0 +1,142 @@
+﻿@model EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs.GetCityDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">City Entry Form</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="CityFormDiv">
+                        @* Div for partial view of city form  *@
+                        @Html.Partial("_EditCity")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="CityListDiv">
+            @* Div for the Partial view of city List *@
+        </div>
+    </div>
+    @section LoadFiles
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="/Assets/AdminAssets/plugins/datatables/jquery.dataTables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+        <script src="/Assets/AdminAssets/plugins/datatables/datatables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+
+            function showConfirmationDialog(action, Id) {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (action === 'Submittion') {
+                            saveCity();
+                        } else if (action === 'Deletion') {
+                            deleteCity(Id);
+                        } else {
+                            console.error('Unknown action:', action);
+                        }
+                    }
+                });
+            }
+            function saveCity() {
+                debugger;
+                if ($("#FrmCity").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmCity'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Admin/City/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            if (result == true) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                             else
+                             {
+                            Swal.fire(
+                                "Error!",
+                                "Error Submitting Form.",
+                                "Error"
+                            );
+                            }
+                        }
+                   });
+                }
+            }
+            function getCities() {
+                debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/City/GetCities',
+                    success: function (Result) {
+                        $("#CityListDiv").html(Result);
+                        $("#ButtonText").text("Show Modified List");
+                    }
+                });
+            }
+            function updateCity(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/City/UpdateCity',
+                    data: { CityId: id },
+                    success: function (Result) {
+                        $("#CityFormDiv").html(Result);
+                    }
+                });
+            }
+            function deleteCity(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/City/DeleteCity',
+                    data: { CityId: id },
+                    success: function (Result) {
+                        if (Result == true) {
+                            Swal.fire(
+                                'Success!',
+                                `Deleted successfully.`,
+                                'success'
+                            );
+                        }
+                        else{
+                            Swal.fire(
+                                "Error!",
+                                "Error Deleting Record.",
+                                "Error"
+                            );
+                        }
+                    }
+                });
+            }
+
+        </script>
+    }
+</div>

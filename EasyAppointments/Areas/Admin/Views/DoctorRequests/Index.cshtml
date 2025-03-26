@@ -1,0 +1,79 @@
+﻿@using EasyAppointments.Services.DoctorServices.CustomClasses
+@model List<EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="table-responsive">
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="tabs" style="">
+                                        <button class="tab-active" style="border:none;background-color:dodgerblue;color:ButtonFace" id="Pending" onclick="loadUserStatus(@Convert.ToInt32(ActionType.Pending))">Pending Requests</button>
+                                        <button class="tab" style="border:none;background-color:dodgerblue;color:ButtonFace" id="Approve" onclick="loadUserStatus(@Convert.ToInt32(ActionType.Approved))">Approved Requests</button>
+                                        <button class="tab" style="border:none;background-color:dodgerblue;color:ButtonFace" id="Reject" onclick="loadUserStatus(@Convert.ToInt32((ActionType.Rejected)))">Rejected Requests</button>
+                                    </div>
+                                    <div id="mainDiv"></div>
+                                    <hr style="background-color:deepskyblue;height:2px" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section LoadFiles {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function () {
+
+                // debugger;
+                // loadUserStatus();
+            });
+            function ChangeStatus(UserId) {
+                debugger;
+                var status = $("#ddlStatus_" + UserId).val();
+                $.ajax({
+                    type: "Get",
+                    url: "/Admin/DoctorRequests/ChangeStatus",
+                    data: { UserID: UserId, Status: status },
+                    success: function (result) {
+                        if (result == true) {
+                              Swal.fire(
+                                'Success!',
+                                `Status Changed Successfully.`,
+                                'Success'
+                            );
+                            loadUserStatus();
+                        }
+                        else {
+                            Swal.fire(
+                                'Error!',
+                                `Unable to Perform Action`,
+                                'danger'
+                            );
+                        }
+                    }
+                });
+            }
+            function loadUserStatus(status) {
+                debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/DoctorRequests/GetAll',
+                    data: { Status: status },
+                    success: function (result) {
+                        $("#mainDiv").html(result);
+                    }
+                });
+            }
+        </script>
+
+    }
+</div>

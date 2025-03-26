@@ -1,0 +1,49 @@
+﻿using EasyAppointments.Services.AdminServices;
+using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EasyAppointments.API.Controllers.AdminControllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ClinicController(ClinicService clinicService, CityService cityService) : ControllerBase
+    {
+        [HttpPost("SaveClinic")]
+        public async Task<IActionResult> Save(SaveClinicDto clinic)
+        {
+            var response = await clinicService.SaveAsync(clinic);
+            return response > 0 ? Ok(response) : BadRequest(response);
+        }
+        [HttpPut("UpdateClinic")]
+        public async Task<IActionResult> Update(SaveClinicDto clinic)
+        {
+            var response = await clinicService.UpdateAsync(clinic);
+            return response > 0 ? Ok(response) : BadRequest(response);
+        }
+        [HttpGet("GetAllClinics")]
+        public async Task<IActionResult> GetAll()
+        {
+            var clinics = await clinicService.GetAllAsync();
+            return clinics.Any() ? Ok(clinics) : NotFound(clinics);
+        }
+        [HttpGet("GetProvinceByCityId/{provinceId}")]
+        public async Task<IActionResult> GetCityByProvinceId(int provinceId)
+        {
+            var clinic = new GetClinicDto();
+            clinic.Cities = await cityService.GetCityByProvinceId(provinceId);
+            return clinic is not null ? Ok(clinic) : NotFound(clinic);
+        }
+        [HttpGet("GetClinicById/{Id}")]
+        public async Task<IActionResult> GetById(int Id)
+        {
+            var clinic = await clinicService.GetByIdAsync(Id);
+            return clinic is not not null ? Ok(clinic) : NotFound(clinic);
+        }
+        [HttpDelete("DeleteClinic/{Id}")]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var response = await clinicService.RemoveAsync(Id);
+            return response > 0 ? Ok(response) : NotFound(response);
+        }
+    }
+}

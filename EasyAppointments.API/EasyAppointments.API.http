@@ -1,0 +1,6 @@
+@EasyAppointments.API_HostAddress = http://localhost:5215
+
+GET {{EasyAppointments.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

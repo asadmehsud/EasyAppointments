@@ -1,0 +1,142 @@
+﻿@model EasyAppointments.Services.DTOs.AdminDTOs.AdminRegisterDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <div class="card-header">
+                    <h4 class="card-title">Admin Form</h4>
+                    <p class="card-text">Please carefully enter all the required information. Changes are tolerated but they can be exhaustive</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div id="AdminFormDiv">
+                                @* Div For Rendering Province Form *@
+                                @Html.Partial("_EditAdmin")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="AdminListDiv">
+        @* Div For Rendering Province List *@
+    </div>
+    @section LoadFiles
+    {
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        @*  <script src="/Assets/AdminAssets/plugins/datatables/jquery.dataTables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+    <script src="/Assets/AdminAssets/plugins/datatables/datatables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                 $('#Image').dropify();
+            });
+            function showConfirmationDialog(action, Id) {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (action === 'Submittion') {
+                            saveAdmin();
+                        } else if (action === 'Deletion') {
+                            deleteAdmin(Id);
+                        }
+                    }
+                });
+            }
+            function saveAdmin() {
+                if ($('#FrmAdmin').valid()) {
+                    var frmData = new FormData(document.getElementById('FrmAdmin'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Admin/Admin/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == true) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                            else{
+                                Swal.fire(
+                                    'Error!',
+                                    `Error Submitting Form.`,
+                                    'Error'
+                                );
+                            }
+                        }
+                    });
+                }
+            }
+            function getAdmins() {
+                debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Admin/GetAdmins',
+                    success: function (Result) {
+                        $("#AdminListDiv").html(Result);
+                        $("#ButtonText").text("Show Modified List");
+                    }
+                });
+            }
+            function updateAdmin(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Admin/UpdateAdmin',
+                    data: { AdminId: id },
+                    success: function (Result) {
+                        $("#AdminFormDiv").html(Result);
+                    }
+                });
+            }
+            function deleteAdmin(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Admin/DeleteAdmin',
+                    data: { AdminId: id },
+                    success: function (Result) {
+                        if (Result == true) {
+                            Swal.fire(
+                                'Success!',
+                                `Deleted successfully.`,
+                                'success'
+                            );
+                        }
+                        else if(Result == false){
+                            Swal.fire(
+                            'Error!',
+                            'Error Deleting Record.',
+                            'Error'
+                            );
+                        }
+                    }
+                });
+            }
+        </script>
+    }
+</div>
+

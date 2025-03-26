@@ -1,0 +1,6 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+<option>Select Medical Center</option>
+@foreach (var item in Model.Clinics)
+{
+    <option value="@item.Id">@item.ClinicName</option>
+}

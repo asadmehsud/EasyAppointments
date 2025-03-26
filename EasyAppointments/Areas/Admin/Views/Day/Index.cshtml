@@ -1,0 +1,139 @@
+﻿@model EasyAppointments.Services.DTOs.AdminDTOs.DayDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                <div class="card-header">
+                    <h4 class="card-title">Day Form</h4>
+                    <p class="card-text">Please carefully enter all the required information. Changes are tolerated but they can be exhaustive</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div id="DayFormDiv">
+                                @* Div For Rendering Province Form *@
+                                @Html.Partial("_EditDay")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="DayListDiv">
+        @* Div For Rendering Province List *@
+    </div>
+    @section LoadFiles
+    {
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        @*  <script src="/Assets/AdminAssets/plugins/datatables/jquery.dataTables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+    <script src="/Assets/AdminAssets/plugins/datatables/datatables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+        <script>
+           
+            function showConfirmationDialog(action, Id) {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (action === 'Submittion') {
+                            saveDay();
+                        } else if (action === 'Deletion') {
+                            deleteDay(Id);
+                        }
+                    }
+                });
+            }
+            function saveDay() {
+                if ($('#FrmDay').valid()) {
+                    var frmData = new FormData(document.getElementById('FrmDay'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Admin/Day/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == true) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successful.`,
+                                    'success'
+                                );
+                            }
+                             else{
+                            Swal.fire(
+                                "Error!",
+                                "Error Submitting Form.",
+                                "Error"
+                            );
+                        }
+                        }
+                    });
+                }
+            }
+            function getDays() {
+                debugger;
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Day/GetDays',
+                    success: function (Result) {
+                        $("#DayListDiv").html(Result);
+                        $("#ButtonText").text("Show Modified List");
+                    }
+                });
+            }
+            function updateDay(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Day/UpdateDay',
+                    data: { dayId: id },
+                    success: function (Result) {
+                        $("#DayFormDiv").html(Result);
+                    }
+                });
+            }
+            function deleteDay(id) {
+                $.ajax({
+                    type: 'Get',
+                    url: '/Admin/Day/DeleteDay',
+                    data: { dayId: id },
+                    success: function (Result) {
+                        if (Result == true) {
+                            Swal.fire(
+                                'Success!',
+                                `Deleted successfully.`,
+                                'success'
+                            );
+                        }
+                         else{
+                            Swal.fire(
+                                "Error!",
+                                "Error Deleting Record.",
+                                "Error"
+                            );
+                        }
+                    }
+                });
+            }
+        </script>
+    }
+</div>
+

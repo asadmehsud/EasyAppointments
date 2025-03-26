@@ -1,0 +1,143 @@
+﻿@model EasyAppointments.Services.DTOs.AdminDTOs.AdminLoginDto
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from doccure.dreamstechnologies.com/html/template/admin/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 Jul 2024 03:38:14 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat.">
+    <meta name="keywords" content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template">
+    <meta name="author" content="Practo Clone HTML Template - Doctor Booking Template">
+    <meta property="og:url" content="../../index.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Doctors Appointment HTML Website Templates | Doccure">
+    <meta property="og:description" content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat.">
+    <meta property="og:image" content="/Assets/AdminAssets/img/preview-banner.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="../../index.html">
+    <meta property="twitter:url" content="../../index.html">
+    <meta name="twitter:title" content="Doctors Appointment HTML Website Templates | Doccure">
+    <meta name="twitter:description" content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat.">
+    <meta name="twitter:image" content="/Assets/AdminAssets/img/preview-banner.html">
+    <title>Doccure - Register</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/Assets/AdminAssets/img/favicon.png">
+
+    <link rel="stylesheet" href="/Assets/AdminAssets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/Assets/AdminAssets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/Assets/AdminAssets/plugins/fontawesome/css/all.min.css">
+
+    <link rel="stylesheet" href="/Assets/AdminAssets/css/custom.css">
+</head>
+<body>
+
+    <div class="main-wrapper login-body">
+        <div class="login-wrapper">
+            <div class="container">
+                <div class="loginbox">
+                    <div class="login-left">
+                        <img class="img-fluid" src="/Assets/AdminAssets/img/Easy Appointment Logo-01.png" alt="Logo">
+                    </div>
+                    <div class="login-right">
+                        <div class="login-right-wrap">
+                            <h1>Login</h1>
+                            <p class="account-subtitle">Access to our dashboard</p>
+
+                            <form id="FrmAdmin">
+                                <div class="form-group">
+                                    @Html.Label("UserName/Email/Contact")
+                                    @Html.TextBoxFor(a => a.AdminIdentifier, new { @class = "form-control", placeholder = "Enter your Email/Contact or UserName" })
+                                    @Html.ValidationMessageFor(a => a.AdminIdentifier, "", new { @style = "color:red" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(a => a.Password)
+                                    @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                                    @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+                                </div>
+                                <div class="mb-0">
+                                    <button class="btn btn-primary w-100" type="button" onclick="showConfirmationDialog()">Login</button>
+                                </div>
+                                <a href="login.html" class="text-center dont-have">Forgot Password?</a>
+                            </form>
+
+                            <div class="login-or">
+                                <span class="or-line"></span>
+                                <span class="span-or">or</span>
+                            </div>
+
+                            <div class="social-login">
+                                <span>Register with</span>
+                                <a href="#" class="facebook"><i class="fa-brands fa-facebook-f"></i></a><a href="#" class="google"><i class="fa-brands fa-google"></i></a>
+                            </div>
+
+                            <div class="text-center dont-have">Don't have an account? <a href="login.html">Login</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/Assets/AdminAssets/js/bootstrap.bundle.min.js" type="5401eddd2df2c2da30ead382-text/javascript"></script>
+
+    <script src="/Assets/AdminAssets/js/script.js" type="5401eddd2df2c2da30ead382-text/javascript"></script>
+    <script src="../../../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="5401eddd2df2c2da30ead382-|49" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+            function showConfirmationDialog() {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       loginAdmin();
+                    }
+                });
+            }
+        function loginAdmin(){
+               if ($('#FrmAdmin').valid()) {
+                    var frmData = new FormData(document.getElementById('FrmAdmin'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Admin/AdminAuthentication/LoginAdmin',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                      xhrFields: {
+                withCredentials: true
+            },
+                        success: function (result) {
+                            if (result == false) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Login successfully.`,
+                                    'success'
+                                );
+                            }
+                            else{
+                                Swal.fire(
+                                    'Error!',
+                                    `Error Submitting Form.`,
+                                    'Error'
+                                );
+                            }
+                        }
+                    });
+                }
+        }
+    </script>
+</body>
+
+</html>

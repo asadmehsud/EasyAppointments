@@ -1,0 +1,33 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+
+    <h3 style="text-decoration:underline">Speciality Details</h3><br />
+    <form id="FrmDoctor" method="post" enctype="multipart/form-data">
+        @Html.HiddenFor(a => a.Id)
+      <div class="form-group">
+          <label>Speciality</label>
+            <select class="form-control" id="Speciality" name="Speciality">
+              <option>Select Speciality</option>
+              @foreach (var item in Model.Specialities)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+          </select>
+      </div>
+        <div class="form-group">
+            <label>Upload Qualifications documents along with CNIC</label>
+            @Html.TextBoxFor(a => a.Qualifications, new { @class = "form-control", type = "file", accept = ".pdf" })
+            @Html.ValidationMessageFor(a => a.Qualifications, "", new { @style = "color:red" })
+        </div>
+        <div class="text-end">
+            <a class="forgot-link" href="login.html">Already have an account?</a>
+        </div>
+    <div style="display:flex">
+        <button class="btn btn-primary w-50" type="button" onclick="showConfirmationDialog('Submittion',0)" style="margin-right:5px">Signup</button>
+        <button class="btn btn-secondary w-50" type="reset">Cancel</button>
+    </div>
+    </form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+
+
