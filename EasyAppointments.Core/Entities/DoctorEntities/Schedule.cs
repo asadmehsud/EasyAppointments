@@ -6,7 +6,8 @@
         public int DoctorId { get; set; }
         public int ClinicId { get; set; }
         public int DayId { get; set; }
-        public int TimeId { get; set; }
+        public string? From { get; set; }
+        public string? To { get; set; }
         public int AppointmentFee { get; set; }
     }
 }

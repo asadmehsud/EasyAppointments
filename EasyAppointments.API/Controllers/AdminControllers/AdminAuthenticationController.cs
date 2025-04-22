@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.AdminControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     [ApiController]
     public class AdminAuthenticationController(AdminAuthenticationService adminAuthenticationService) : ControllerBase
     {

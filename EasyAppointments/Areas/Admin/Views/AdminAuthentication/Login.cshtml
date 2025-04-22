@@ -120,16 +120,13 @@
             },
                         success: function (result) {
                             if (result == false) {
-                                Swal.fire(
-                                    'Success!',
-                                    `Login successfully.`,
-                                    'success'
-                                );
+                              window.location.href = '/Admin/AdminDashboard/Dashboard';
                             }
                             else{
                                 Swal.fire(
                                     'Error!',
-                                    `Error Submitting Form.`,
+                                    `Login Failed!
+                                    Incorrect Credentials`,
                                     'Error'
                                 );
                             }

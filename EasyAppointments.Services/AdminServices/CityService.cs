@@ -28,8 +28,8 @@ namespace EasyAppointments.Services.AdminServices
                             select new GetCityDto
                             {
                                 Id = ct.Id,
-                                Name = ct.Name,
-                                ProvinceName = pr.ProvinceName,
+                                Name = ct.Name!,
+                                ProvinceName = pr.ProvinceName!,
                                 Status = ct.Status,
                                 ProvinceId = ct.ProvinceId,
                             };

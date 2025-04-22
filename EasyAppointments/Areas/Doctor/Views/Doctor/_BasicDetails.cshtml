@@ -1,0 +1,98 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+<form id="FrmDoctor">
+    @Html.HiddenFor(a => a.Id)
+    <div class="setting-card">
+        <div class="change-avatar img-upload">
+            <div class="upload-img" style="margin-right:240px;margin-left:20px">
+                <h5>Profile Image</h5>
+                <div class="imgs-load d-flex align-items-center">
+                    <div class="change-photo">
+                        Upload New
+                        @Html.TextBoxFor(a => a.Image, new { @class = "form-control", type = "file", accept = "image/jpg,image/jpeg,image/png" })
+                        @Html.ValidationMessageFor(a => a.Image, "", new { @style = "color:red" })
+                    </div>
+                </div>
+                <p class="form-text">Accepted format jpg,png,jpeg</p>
+            </div>
+            <div class="upload-img">
+                <h5>CNICFrontImage</h5>
+                <div class="imgs-load d-flex align-items-center">
+                    <div class="change-photo">
+                        Upload New
+                        @Html.TextBoxFor(a => a.CNICFrontImage, new { @class = "form-control", type = "file", accept = "image/jpg,image/jpeg,image/png"})
+                        @Html.ValidationMessageFor(a => a.CNICFrontImage, "", new { @style = "color:red" })
+                    </div>
+                </div>
+                <p class="form-text">Accepted format jpg,png,jpeg</p>
+            </div>
+        </div>
+    </div>
+    <div class="setting-title">
+        <h5>Information</h5>
+    </div>
+    <div class="setting-card">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.FirstName)
+                    @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.FirstName, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.LastName)
+                    @Html.TextBoxFor(a => a.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.LastName, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.UserName)
+                    @Html.TextBoxFor(a => a.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.UserName, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.Contact)
+                    @Html.TextBoxFor(a => a.Contact, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.Email)
+                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.CNIC)
+                    @Html.TextBoxFor(a => a.CNIC, new { @class = "form-control", placeholder = "Enter CNIC Number" })
+                    @Html.ValidationMessageFor(a => a.CNIC, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.Address)
+                    @Html.TextBoxFor(a => a.Address, new { @class = "form-control", placeholder = "Enter Address" })
+                    @Html.ValidationMessageFor(a => a.Address, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.ZipCode)
+                    @Html.TextBoxFor(a => a.ZipCode, new { @class = "form-control", placeholder = "Enter ZipCode" })
+                    @Html.ValidationMessageFor(a => a.ZipCode, "", new { @style = "color:red" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-btn text-end">
+        <a href="#" class="btn btn-gray">Cancel</a>
+        <button type="button" class="btn btn-primary prime-btn" onclick="showConfirmationDialog('Doctor')">Save Changes</button>
+    </div>
+</form>

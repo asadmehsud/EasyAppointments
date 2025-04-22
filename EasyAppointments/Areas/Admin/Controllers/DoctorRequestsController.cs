@@ -32,7 +32,7 @@ namespace EasyAppointments.Areas.Admin.Controllers
             if (jsonData is not null)
             {
                 var doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonData);
-                return File(doctor!.Qualifications, "application/pdf");
+                return File(doctor!.QualificationDocuments, "application/pdf");
             }
             return View();
         }

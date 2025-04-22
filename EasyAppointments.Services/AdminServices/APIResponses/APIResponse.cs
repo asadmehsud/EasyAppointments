@@ -1,4 +1,4 @@
-﻿namespace EasyAppointments.Services.APIResponses
+﻿namespace EasyAppointments.Services.AdminServices.APIResponses
 {
     public class APIResponse<T>
     {

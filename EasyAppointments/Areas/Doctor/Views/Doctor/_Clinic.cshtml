@@ -1,0 +1,60 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs.GetClinicDto
+<form id="FrmClinic">
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a => a.DoctorId)
+    <div class="setting-title">
+        <h5>Information</h5>
+    </div>
+    <div class="setting-card">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.Label("Province")
+                    <select class="form-control" id="Province" name="ProvinceId" onchange="getCityByProvince()">
+                        <option>Select Province</option>
+                        @foreach (var item in Model.Provinces!)
+                        {
+                            if (Model.ProvinceId == item.Id)
+                            {
+                                <option selected value="@item.Id">@item.ProvinceName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.ProvinceName</option>
+                            }
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(a => a.ProvinceId, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.Label("City")
+                    <select class="form-control" id="City" name="CityId">
+                        <option>Select City</option>
+                        <option>!-- Select Province first --!</option>
+                    </select>
+                    @Html.ValidationMessageFor(a => a.CityId, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.ClinicName)
+                    @Html.TextBoxFor(a => a.ClinicName, new { @class = "form-control", placeholder = "Enter Clinic Name" })
+                    @Html.ValidationMessageFor(a => a.ClinicName, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.Address)
+                    @Html.TextBoxFor(a => a.Address, new { @class = "form-control", placeholder = "Enter Clinic Name" })
+                    @Html.ValidationMessageFor(a => a.Address, "", new { @style = "color:red" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-btn text-end">
+        <a href="#" class="btn btn-gray">Cancel</a>
+        <button type="button" class="btn btn-primary prime-btn" onclick="showConfirmationDialog('Clinic')">Save Changes</button>
+    </div>
+</form>

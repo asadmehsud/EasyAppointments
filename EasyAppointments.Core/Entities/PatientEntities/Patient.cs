@@ -7,12 +7,12 @@ namespace EasyAppointments.Data.Entities.PatientEntities
     {
         [Key]
         public int PatientId { get; set; }
-        public string PatientName { get; set; } = default!;
-        public string Contact { get; set; } = default!;
+        public string? PatientName { get; set; }
+        public string? Contact { get; set; } 
         public string? Email { get; set; }
-        public string Password { get; set; } = default!;
-        public string Gender { get; set; } = default!;
-        public string Address { get; set; } = default!;
-        public Role Role { get; set; } = default!;
+        public string? Password { get; set; }
+        public string? Gender { get; set; } 
+        public string? Address { get; set; }
+        public Role Role { get; set; } 
     }
 }

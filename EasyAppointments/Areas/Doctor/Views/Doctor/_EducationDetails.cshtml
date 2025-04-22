@@ -1,0 +1,57 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+<form id="FrmDoctor">
+    @Html.HiddenFor(a => a.Id)
+    <div class="setting-title">
+        <h5>Information</h5>
+    </div>
+    <div class="setting-card">
+        <div class="row">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.Speciality)
+                    <select class="form-control" name="Speciality">
+                        <option>Select Speciality</option>
+                        @foreach (var item in Model.Specialities)
+                        {
+                            if (Model.Speciality == item.Id)
+                            {
+                                <option selected value="@item.Id">@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(a => a.Speciality, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.AcademicQualifications)
+                    @Html.TextBoxFor(a => a.AcademicQualifications, new { @class = "form-control", placeholder = "Tell us about your degrees" })
+                    @Html.ValidationMessageFor(a => a.AcademicQualifications, "", new { @style = "color:red" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-wrap">
+                    @Html.LabelFor(a => a.QualificationDocuments)
+                    @Html.TextBoxFor(a => a.QualificationDocuments, new { @class = "form-control", type = "file", accept = "application/pdf" })
+                    @Html.ValidationMessageFor(a => a.QualificationDocuments, "", new { @style = "color:red" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-btn text-end">
+        <a href="#" class="btn btn-gray">Cancel</a>
+        <button type="button" class="btn btn-primary prime-btn" onclick="showConfirmationDialog('Doctor')">Save Changes</button>
+    </div>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $.ready(function (){
+              // $("#Image").dropify();
+              $("#CNICFrontImage").dropify();
+          });
+</script>

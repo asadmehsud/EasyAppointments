@@ -6,7 +6,7 @@ namespace EasyAppointments.Data.Entities.AdminEntities
     {
         [Key]
         public int Id { get; set; }
-        public string ProvinceName { get; set; } = default!;
+        public string? ProvinceName { get; set; } 
         public int Status { get; set; }
     }
 }

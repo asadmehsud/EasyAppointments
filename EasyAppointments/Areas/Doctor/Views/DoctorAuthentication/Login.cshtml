@@ -1,0 +1,88 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorLoginDto
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="account-content">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-12 col-lg-6 login-right">
+                        <div class="login-header">
+                            <h3>Login Doctor<a href="register.html">Not a Doctor?</a></h3>
+                        </div>
+
+                        <form id="FrmDoctor">
+                            <div class="form-group">
+                                @Html.TextBoxFor(a => a.Identifier, new { @class = "form-control", placeholder = "Enter Contact/Email or UserName" })
+                                @Html.ValidationMessageFor(a => a.Identifier, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                                @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+                            </div>
+                            <div class="mb-0">
+                                <button class="btn btn-primary w-100" type="button" onclick="showConfirmationDialog()">Login</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @section LoadFiles {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+              function showConfirmationDialog() {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        loginDoctor();
+                    }
+                });
+            }
+            function loginDoctor() {
+                debugger;
+                if ($("#FrmDoctor").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmDoctor'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Doctor/DoctorAuthentication/LoginDoctor',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == false) {
+                               window.location.href="/Doctor/DoctorDashboard/Dashboard?title=Dashboard"
+                            }
+                           else{
+                               Swal.fire(
+                                   'Error!',
+                                   'Login Failed! Invalid Credentials.',
+                                   'Error'
+                               );
+                           }
+                        }
+                    });
+                }
+
+            }
+        </script>
+    }
+</div>
+

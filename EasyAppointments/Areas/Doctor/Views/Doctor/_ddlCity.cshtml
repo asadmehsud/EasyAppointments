@@ -1,7 +1,13 @@
-﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorDto
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs.GetClinicDto
 <option>Select City</option>
-@foreach (var item in Model.Cities)
+@foreach (var item in Model.Cities!)
 {
-    <option value="@item.Id">@item.Name</option>
+    if (Model.CityId == item.Id)
+    {
+        <option selected value="@item.Id">@item.Name</option>
+    }
+    else
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
 }
-    

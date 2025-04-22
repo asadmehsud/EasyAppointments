@@ -1,4 +1,6 @@
 ﻿using EasyAppointments.Core.Interfaces.AdminInterfaces;
+using EasyAppointments.Core.Interfaces.DoctorInterfaces;
+using EasyAppointments.Core.Interfaces.PatientInterfaces;
 using EasyAppointments.Data;
 using EasyAppointments.Data.Repositories.AdminRepositories.Implementations;
 using EasyAppointments.Data.Repositories.DoctorRepositories.Implementations;
@@ -42,7 +44,12 @@ namespace EasyAppointments.API.Extensions
                 .AddScoped<AdminAuthenticationService>()
                 .AddScoped<IAdminAuthenticationRepository, AdminAuthenticationRepository>()
                 .AddScoped<CookiesService>()
-                .AddHttpContextAccessor();
+                .AddHttpContextAccessor()
+                .AddScoped<PatientAuthenticationService>()
+                .AddScoped<IPatientAuthenticationRepository, PatientAuthenticationRepository>()
+                .AddScoped<DoctorAuthenticationService>()
+                .AddScoped<IDoctorAuthenticationRepository, DoctorAuthenticationRepository>();
+                
         }
         public static IServiceCollection AddConnections(this IServiceCollection services, IConfiguration configuration)
         {

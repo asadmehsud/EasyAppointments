@@ -11,5 +11,6 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Interfaces
         Task<Doctor> LoginAsync(Doctor doctor);
         Task<List<Doctor>> GetByStatusAsync(int Status);
         Task<List<Doctor>> GetAllAsync();
+        Task<Doctor> GetByIdentifierAsync(string identifier);
     }
 }

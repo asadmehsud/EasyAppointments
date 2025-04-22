@@ -1,7 +1,6 @@
-﻿using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs
+namespace EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs
 {
     public record SaveClinicDto
     {
@@ -20,8 +19,6 @@ namespace EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs
 
         [Required(ErrorMessage = "Required")]
         public string Address { get; set; } = default!;
-
-        [Required(ErrorMessage = "Select Status")]
-        public int? Status { get; set; }
+        public int DoctorId { get; set; }
     }
 }

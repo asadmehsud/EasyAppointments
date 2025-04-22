@@ -1,8 +1,9 @@
 ﻿using EasyAppointments.Services.AdminServices;
-using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
+using EasyAppointments.Services.DoctorServices;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyAppointments.API.Controllers.AdminControllers
+namespace EasyAppointments.API.Controllers.DoctorControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -44,6 +45,12 @@ namespace EasyAppointments.API.Controllers.AdminControllers
         {
             var response = await clinicService.RemoveAsync(Id);
             return response > 0 ? Ok(response) : NotFound(response);
+        }
+        [HttpGet("GetClinicDetails/{doctorId}")]
+        public async Task<IActionResult> GetClinicDetails(int doctorId)
+        {
+            var response = await clinicService.GetClinicDetails(doctorId);
+            return response is not null ? Ok(response) : NotFound();
         }
     }
 }

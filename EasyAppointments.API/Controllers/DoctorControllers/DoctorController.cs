@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyAppointments.API.Controllers.DoctorControllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class DoctorController(DoctorService doctorService, CityService cityService, ClinicService clinicService, SpecialityService specialityService) : ControllerBase
     {
         [HttpPost("SaveDoctor")]
@@ -17,7 +16,7 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
             return doctorId > 0 ? Ok(doctorId) : BadRequest();
         }
         [HttpPut("UpdateDoctor")]
-        public async Task<IActionResult> Update(DoctorDto doctor)
+        public async Task<IActionResult> Update([FromBody] DoctorDto doctor)
         {
             var response = await doctorService.UpdateAsync(doctor);
             return response > 0 ? Ok(response) : BadRequest(response);
@@ -59,6 +58,13 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
         {
 
             var doctor = await doctorService.GetByIdAsync(Id);
+            return doctor is not null ? Ok(doctor) : NotFound(doctor);
+        }
+        [HttpGet("GetDoctorByIdentifier/{Identifier}")]
+        public async Task<IActionResult> GetByIdentifier(string Identifier)
+        {
+
+            var doctor = await doctorService.GetByIdentifieAsync(Identifier);
             return doctor is not null ? Ok(doctor) : NotFound(doctor);
         }
         [HttpGet("GetAllDoctors")]

@@ -13,7 +13,7 @@ namespace EasyAppointments.Services.DoctorServices
         public async Task<int> SaveAsync(DoctorDto doctorDto)
         {
             doctorDto.Status = (int)ActionType.Pending;
-            doctorDto.Role=Role.Doctor;
+            doctorDto.Role = Role.Doctor;
             return await doctorRepository.SaveAsync(mapper.Map<Doctor>(doctorDto));
         }
         public async Task<int> UpdateAsync(DoctorDto doctorDto)
@@ -22,22 +22,24 @@ namespace EasyAppointments.Services.DoctorServices
             row = await doctorRepository.GetByIdAsync(doctorDto.Id);
             DoctorDto objDocDto = new DoctorDto()
             {
-                FirstName = row.FirstName,
-                LastName = row.LastName,
-                Email = row.Email,
-                Contact = row.Contact,
-                CNIC = row.CNIC,
-                Password = row.Password,
-                Image = row.Image,
+                FirstName = row.FirstName != doctorDto.FirstName ? doctorDto.FirstName : row.FirstName,
+                LastName = row.LastName != doctorDto.LastName ? doctorDto.LastName : row.LastName,
+                UserName = row.UserName != doctorDto.UserName ? doctorDto.UserName : row.UserName,
+                Email = row.Email != doctorDto.Email ? doctorDto.Email : row.Email,
+                Contact = row.Contact != doctorDto.Contact ? doctorDto.Contact : row.Contact,
+                Password = row.Password!,
+                Role = row.Role,
                 Id = row.Id,
                 Status = row.Status,
-                Address = row.Address ?? doctorDto.Address,
-                Province = row.Province == 0 ? doctorDto.Province : row.Province,
-                City = row.City == 0 ? doctorDto.City : row.City,
-                ZipCode = row.ZipCode ?? doctorDto.ZipCode,
-                Speciality = doctorDto.Speciality,
-                Qualifications = doctorDto.Qualifications,
-
+                ActiveStatus = row.ActiveStatus,
+                CNIC = row.CNIC is null || row.CNIC != doctorDto.CNIC ? doctorDto.CNIC : row.CNIC,
+                Image = row.Image is null || row.Image.Length == 0 || !row.Image.SequenceEqual(doctorDto.Image) ? doctorDto.Image : row.Image!,
+                CNICFrontImage = row.CNICFrontImage is null || row.CNICFrontImage.Length == 0 || !row.CNICFrontImage.SequenceEqual(doctorDto.CNICFrontImage) ? doctorDto.CNICFrontImage : row.CNICFrontImage!,
+                Address = row.Address is null || row.Address != doctorDto.Address ? doctorDto.Address : row.Address,
+                ZipCode = row.ZipCode is null || row.ZipCode != doctorDto.ZipCode ? doctorDto.ZipCode : row.ZipCode,
+                Speciality = doctorDto.Speciality == 0 || row.Speciality != doctorDto.Speciality ? doctorDto.Speciality : row.Speciality,
+                AcademicQualifications = row.AcademicQualifications is null || row.AcademicQualifications != doctorDto.AcademicQualifications ? doctorDto.AcademicQualifications : row.AcademicQualifications,
+                QualificationDocuments = row.QualificationDocuments is null || row.QualificationDocuments.Length == 0 || !row.QualificationDocuments.SequenceEqual(doctorDto.QualificationDocuments) ? doctorDto.QualificationDocuments : row.QualificationDocuments!,
             };
             var doctor = mapper.Map<Doctor>(objDocDto);
             return await doctorRepository.UpdateAsync(doctor);
@@ -45,34 +47,18 @@ namespace EasyAppointments.Services.DoctorServices
         public async Task<List<DoctorDto>> GetAllAsync()
         {
             var doctors = await doctorRepository.GetAllAsync();
-            var cities = await cityRepository.GetAllAsync();
-            var provinces = await provinceRepository.GetAllAsync();
-            var medicalCenters = await clinicRepository.GetAllAsync();
-            var specialities = await specialityRepository.GetAllAsync();
-            var alldata = from dr in doctors
-                          join pr in provinces
-                        on dr.Province equals pr.Id
-                          join ct in cities on pr.Id equals ct.ProvinceId
-                          join mc in medicalCenters on ct.Id equals mc.CityId
-                          join sp in specialities on dr.Speciality equals sp.Id
-                          select new DoctorDto
-                          {
-                              Id = dr.Id,
-                              FirstName = dr.FirstName,
-                              LastName = dr.LastName,
-                              Image = dr.Image,
-                              Contact = dr.Contact,
-                              Address = dr.Address!,
-                              ActiveStatus = dr.ActiveStatus,
-                              CNIC = dr.CNIC,
-                              ProvinceName = pr.ProvinceName,
-                              CityName = ct.Name,
-                              SpecialityName = sp.Name
-                          };
-            return alldata.ToList();
+            return mapper.Map<List<DoctorDto>>(doctors);
         }
 
         public async Task<DoctorDto> GetByIdAsync(int Id) => mapper.Map<DoctorDto>(await doctorRepository.GetByIdAsync(Id));
+        public async Task<DoctorDto> GetByIdentifieAsync(string Identifier)
+        {
+            var doctor = mapper.Map<DoctorDto>(await doctorRepository.GetByIdentifierAsync(Identifier));
+            var speciality = await specialityRepository.GetByIdAsync(doctor.Speciality);
+            doctor.SpecialityName = speciality.Name!;
+            return doctor;
+        }
+
         public async Task<int> ChangeStatus(int UserId, int Status)
         {
             var doctor = await doctorRepository.GetByIdAsync(UserId);
@@ -87,5 +73,6 @@ namespace EasyAppointments.Services.DoctorServices
             doctor.ActiveStatus = ActiveStatus;
             return await doctorRepository.UpdateAsync(doctor);
         }
+
     }
 }

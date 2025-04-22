@@ -1,8 +1,8 @@
 ﻿using EasyAppointments.API;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
-using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,33 +15,72 @@ namespace EasyAppointments.Areas.Doctor.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Save(DoctorDto doctor, IFormFile Image, IFormFile Qualifications)
+        public async Task<IActionResult> BasicDetails()
         {
-            if (doctor.Id > 0)
+            DoctorDto dto = new DoctorDto();
+            var doctorId = (int)HttpContext.Session.GetInt32("DoctorId")!;
+            var jsonData = await aPIService.GetByIdAsync(APIEndPoint.DoctorEndPoint.GetById + doctorId);
+            if (jsonData is not null)
             {
-                if (Qualifications != null)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        await Qualifications.CopyToAsync(ms);
-                        doctor.Qualifications = ms.ToArray();
-                    }
-                }
-                var response = await aPIService.PutAsync(doctor, APIEndPoint.DoctorEndPoint.Update);
-                return Json(response);
+                dto = JsonConvert.DeserializeObject<DoctorDto>(jsonData)!;
             }
-            else
+            return PartialView("_BasicDetails", dto);
+        }
+        public async Task<IActionResult> EducationDetails()
+        {
+            DoctorDto doctor = new DoctorDto();
+            var doctorId = (int)HttpContext.Session.GetInt32("DoctorId")!;
+            var jsonDoctor = await aPIService.GetByIdAsync(APIEndPoint.DoctorEndPoint.GetById + doctorId);
+            if (jsonDoctor is not null)
             {
-                using (var memorystream = new MemoryStream())
+                doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonDoctor)!;
+                var jsonSpeciality = await aPIService.GetAsync(APIEndPoint.SpecialityEndPoint.GetAll);
+                if (jsonSpeciality is not null)
                 {
-                    await Image.CopyToAsync(memorystream);
-                    doctor.Image = memorystream.ToArray();
+                    var specialities = JsonConvert.DeserializeObject<List<SpecialityDto>>(jsonSpeciality);
+                    doctor.Specialities = specialities!;
                 }
-                var json = await aPIService.PostAsync(doctor, APIEndPoint.DoctorEndPoint.Post);
-                var doctorMaxId = JsonConvert.DeserializeObject<int>(json);
-                HttpContext.Session.SetInt32("DoctorId", doctorMaxId);
-                return Json(doctorMaxId);
             }
+            return PartialView("_EducationDetails", doctor);
+        }
+        public async Task<IActionResult> ClinicDetails()
+        {
+            GetClinicDto dto = new GetClinicDto();
+            dto.DoctorId = (int)HttpContext.Session.GetInt32("DoctorId")!;
+            var jsonData = await aPIService.GetAsync(APIEndPoint.ClinicEndPoint.GetClinicDetails + dto.DoctorId);
+            if (jsonData is not null)
+            {
+                dto = JsonConvert.DeserializeObject<GetClinicDto>(jsonData)!;
+            }
+            return PartialView("_Clinic", dto);
+        }
+        public async Task<IActionResult> ScheduleDetails()
+        {
+            ScheduleDto dto = new ScheduleDto();
+            dto.DoctorId = (int)HttpContext.Session.GetInt32("DoctorId")!;
+            var jsonData = await aPIService.GetAsync(APIEndPoint.ScheduleEndPoint.GetScheduleDetails + dto.DoctorId);
+            if (jsonData is not null)
+            {
+                dto = JsonConvert.DeserializeObject<ScheduleDto>(jsonData)!;
+            }
+            return PartialView("_ScheduleDetails", dto);
+        }
+        public async Task<IActionResult> Save(DoctorDto doctor, IFormFile Image, IFormFile CNICFrontImage, IFormFile QualificationDocuments)
+        {
+            if (Image is not null && Image.Length > 0)
+            {
+                doctor.Image = await GetBytesArrayAsync(Image);
+            }
+            if (CNICFrontImage is not null && CNICFrontImage.Length > 0)
+            {
+                doctor.CNICFrontImage = await GetBytesArrayAsync(CNICFrontImage);
+            }
+            if (QualificationDocuments is not null && QualificationDocuments.Length > 0)
+            {
+                doctor.QualificationDocuments = await GetBytesArrayAsync(QualificationDocuments);
+            }
+            var response = await aPIService.PutAsync(doctor, APIEndPoint.DoctorEndPoint.Update);
+            return Json(response);
         }
         public async Task<byte[]> GetBytesArrayAsync(IFormFile file)
         {
@@ -83,13 +122,13 @@ namespace EasyAppointments.Areas.Doctor.Controllers
         }
         public async Task<IActionResult> GetCityByProvince(int ProvinceId)
         {
-            var doctor = new DoctorDto();
+            var clinic = new GetClinicDto();
             var jsonData = await aPIService.GetAsync(APIEndPoint.CityEndPoint.GetCityByProvince + ProvinceId);
             if (jsonData is not null)
             {
                 var cities = JsonConvert.DeserializeObject<List<GetCityDto>>(jsonData)!;
-                doctor.Cities = cities;
-                return PartialView("_ddlCity", doctor);
+                clinic.Cities = cities;
+                return PartialView("_ddlCity", clinic);
             }
             return View();
         }

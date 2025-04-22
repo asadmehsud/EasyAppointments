@@ -4,13 +4,13 @@ using EasyAppointments.Data.Entities.DoctorEntities;
 using EasyAppointments.Data.Entities.PatientEntities;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
-using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 using EasyAppointments.Services.DTOs.PatientDTOs;
 
 namespace EasyAppointments
 {
-    public class Mapper:Profile
+    public class Mapper : Profile
     {
         public Mapper()
         {
@@ -23,8 +23,15 @@ namespace EasyAppointments
             CreateMap<DoctorDto, Doctor>().ReverseMap();
             CreateMap<PatientDto, Patient>().ReverseMap();
             CreateMap<AdminRegisterDto, Admin>().ReverseMap();
+            CreateMap<AdminLoginDto, Admin>().ReverseMap();
             CreateMap<DayDto, Day>().ReverseMap();
             CreateMap<TimeDto, Time>().ReverseMap();
+            CreateMap<PatientRegisterDto, Patient>().ReverseMap();
+            CreateMap<PatientLoginDto, Patient>().ReverseMap();
+            CreateMap<DoctorRegisterDto, Doctor>().ReverseMap();
+            CreateMap<DoctorLoginDto, Doctor>().ReverseMap();
+            CreateMap<BasicDetailsDto, Doctor>().ReverseMap();
+            CreateMap<ScheduleDto, Schedule>().ReverseMap();
         }
     }
 }

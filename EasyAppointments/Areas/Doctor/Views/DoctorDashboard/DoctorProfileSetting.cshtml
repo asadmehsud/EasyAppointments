@@ -1,0 +1,229 @@
+﻿@{
+    ViewData["Title"] = "DoctorProfileSetting";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorDashboardLayout.cshtml";
+}
+
+
+<div class="col-lg-8 col-xl-9">
+
+    <div class="dashboard-header">
+        <h3>Profile Settings</h3>
+    </div>
+
+    <div class="setting-tab">
+        <div class="appointment-tabs">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a id="LinkBasicDetails" class="nav-link" onclick="basicDetails()">Basic Details</a>
+                </li>
+                <li class="nav-item">
+                    <a id="LinkEducationcDetails" class="nav-link" onclick="educationDetails()">Education</a>
+                </li>
+                <li class="nav-item">
+                    <a id="LinkClinicDetails" class="nav-link" onclick="clinicDetails()">Clinics</a>
+                </li>
+                <li class="nav-item">
+                    <a id="LinkScheduleDetails" class="nav-link" onclick="scheduleDetails()">Business Hours</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="ProfileContent">
+        @* ProfileContent *@
+    </div>
+
+    @section LoadFiles {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+
+
+             function showConfirmationDialog(entity) {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                           if(entity==='Doctor'){
+                               saveDoctor();
+                           }
+                           else if(entity==='Clinic'){
+                               saveClinic();
+                           }
+                           else{
+                               saveSchedule();
+                           }
+                    }
+                });
+            }
+            function saveDoctor() {
+                debugger;
+                if ($("#FrmDoctor").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmDoctor'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Doctor/Doctor/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == 1) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                           else{
+                               Swal.fire(
+                                   'Error!',
+                                   'Error Submitting Form.',
+                                   'Error'
+                               );
+                           }
+                        }
+                    });
+                }
+            }
+            function saveClinic() {
+                debugger;
+                if ($("#FrmClinic").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmClinic'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Doctor/Clinic/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == 1) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                           else{
+                               Swal.fire(
+                                   'Error!',
+                                   'Error Submitting Form.',
+                                   'Error'
+                               );
+                           }
+                        }
+                    });
+                }
+            }
+            function saveSchedule() {
+                debugger;
+                if ($("#FrmSchedule").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmSchedule'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Doctor/Schedule/Save',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == 1) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                           else{
+                               Swal.fire(
+                                   'Error!',
+                                   'Error Submitting Form.',
+                                   'Error'
+                               );
+                           }
+                        }
+                    });
+                }
+            }
+              function basicDetails(){
+                $.ajax({
+                    type:'get',
+                    url:'/Doctor/Doctor/BasicDetails',
+                    success:function(response){
+                        $("#LinkBasicDetails").addClass("active");
+                        $("#LinkEducationDetails").removeClass("active");
+                        $("#LinkClinicDetails").removeClass("active");
+                        $("#LinkScheduleDetails").removeClass("active");
+                        $("#ProfileContent").html(response);
+                        $("#Image").dropify();
+                        $("#CNICFrontImage").dropify();
+                    }
+                });
+            }
+              function educationDetails(){
+                $.ajax({
+                    type:'get',
+                    url:'/Doctor/Doctor/EducationDetails',
+                    success:function(response){
+                        $("#LinkEducationcDetails").addClass("active");
+                         $("#LinkBasicDetails").removeClass("active");
+                        $("#LinkClinicDetails").removeClass("active");
+                        $("#LinkScheduleDetails").removeClass("active");
+                        $("#ProfileContent").html(response);
+                        $("#QualificationDocuments").dropify();
+                    }
+                });
+              }
+                function clinicDetails(){
+                $.ajax({
+                    type:'get',
+                    url:'/Doctor/Doctor/ClinicDetails',
+                    success:function(response){
+                        $("#LinkClinicDetails").addClass("active");
+                         $("#LinkBasicDetails").removeClass("active");
+                        $("#LinkEducationDetails").removeClass("active");
+                        $("#LinkScheduleDetails").removeClass("active");
+                        $("#ProfileContent").html(response);
+                    }
+                });
+            }
+            function scheduleDetails(){
+                $.ajax({
+                    type:'get',
+                    url:'/Doctor/Doctor/ScheduleDetails',
+                    success:function(response){
+                        $("#LinkScheduleDetails").addClass("active");
+                         $("#LinkBasicDetails").removeClass("active");
+                        $("#LinkEducationDetails").removeClass("active");
+                        $("#LinkClinicDetails").removeClass("active");
+                        $("#ProfileContent").html(response);
+                    }
+                });
+            }
+              function getCityByProvince() {
+                debugger;
+                var province = $("#Province").val();
+                $.ajax({
+                    type: 'post',
+                    url: '/Doctor/Doctor/GetCityByProvince',
+                    data: { ProvinceId: province },
+                    success: function (result) {
+                        debugger;
+                        $("#City").html(result);
+                    }
+                });
+            }
+        </script>
+    }
+</div>
+

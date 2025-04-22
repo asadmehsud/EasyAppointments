@@ -17,7 +17,6 @@ namespace EasyAppointments.Services.AdminServices
     {
         public async Task<int> AdminRegistrationAsync(AdminRegisterDto adminRegisterDto)
         {
-            adminRegisterDto.Role = Role.Admin;
             return await adminAuthenticationRepository.RegisterAsync(mapper.Map<Admin>(adminRegisterDto));
         }
         public async Task<int> AdminLoginAsync(AdminLoginDto adminLoginDto)

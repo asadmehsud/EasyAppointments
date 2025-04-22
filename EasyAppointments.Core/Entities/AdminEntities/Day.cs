@@ -6,6 +6,6 @@ namespace EasyAppointments.Data.Entities.AdminEntities
     {
         [Key]
         public int Id { get; set; }
-        public string WeekDay { get; set; } = string.Empty;
+        public string? WeekDay { get; set; } 
     }
 }

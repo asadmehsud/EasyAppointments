@@ -1,13 +1,13 @@
 ﻿using EasyAppointments.API;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
-using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace EasyAppointments.Areas.Admin.Controllers
+namespace EasyAppointments.Areas.Doctor.Controllers
 {
-    [Area("Admin")]
+    [Area("Doctor")]
     public class ClinicController(IAPIService aPIService) : Controller
     {
         public async Task<IActionResult> Index()
@@ -54,7 +54,7 @@ namespace EasyAppointments.Areas.Admin.Controllers
             {
                 var cities = JsonConvert.DeserializeObject<List<GetCityDto>>(jsonData);
                 clinic.Cities = cities!;
-            return PartialView("_DddlCity", clinic);
+                return PartialView("_DddlCity", clinic);
             }
             return View();
         }

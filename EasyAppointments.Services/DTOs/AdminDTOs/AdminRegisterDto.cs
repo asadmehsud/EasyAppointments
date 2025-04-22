@@ -15,7 +15,13 @@ namespace EasyAppointments.Services.DTOs.AdminDTOs
         public string LastName { get; set; } = default!;
 
         [Required(ErrorMessage = "Required")]
+        public string UserName { get; set; } = default!;
+
+        [Required(ErrorMessage = "Required")]
         public string Email { get; set; } = default!;
+        
+        [Required(ErrorMessage = "Required")]
+        public string Contact { get; set; } = default!;
 
         [Required(ErrorMessage = "Required")]
         public string Password { get; set; } = default!;

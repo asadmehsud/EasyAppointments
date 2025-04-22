@@ -58,9 +58,19 @@
                                     @Html.ValidationMessageFor(a => a.LastName, "", new { @style = "color:red" })
                                 </div>
                                 <div class="form-group">
+                                    @Html.LabelFor(a => a.UserName)
+                                    @Html.TextBoxFor(a => a.UserName, new { @class = "form-control", placeholder = "Enter UserName" })
+                                    @Html.ValidationMessageFor(a => a.UserName, "", new { @style = "color:red" })
+                                </div>
+                                <div class="form-group">
                                     @Html.LabelFor(a => a.Email)
                                     @Html.TextBoxFor(a => a.Email, new { @class = "form-control", placeholder = "Enter Email" })
                                     @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(a => a.Contact)
+                                    @Html.TextBoxFor(a => a.Contact, new { @class = "form-control", placeholder = "Enter Contact" })
+                                    @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(a => a.Password)
@@ -73,7 +83,7 @@
                                     @Html.ValidationMessageFor(a => a.ConfirmPassword, "", new { @style = "color:red" })
                                 </div>
                                 <div class="mb-0">
-                                    <button class="btn btn-primary w-100" type="submit" onclick="showConfirmationDialog()">Register</button>
+                                    <button class="btn btn-primary w-100" type="button" onclick="showConfirmationDialog()">Register</button>
                                 </div>
                             </form>
 
@@ -98,9 +108,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/Assets/AdminAssets/js/bootstrap.bundle.min.js" type="5401eddd2df2c2da30ead382-text/javascript"></script>
-
     <script src="/Assets/AdminAssets/js/script.js" type="5401eddd2df2c2da30ead382-text/javascript"></script>
-    <script src="../../../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="5401eddd2df2c2da30ead382-|49" defer></script>
+    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="5401eddd2df2c2da30ead382-|49" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -142,7 +151,7 @@
                             else{
                                 Swal.fire(
                                     'Error!',
-                                    `Error Submitting Form.`,
+                                    `Login Failed! Incorrect Credentials.`,
                                     'Error'
                                 );
                             }

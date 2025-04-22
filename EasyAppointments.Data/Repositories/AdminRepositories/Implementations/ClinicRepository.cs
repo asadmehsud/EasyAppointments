@@ -10,7 +10,7 @@ namespace EasyAppointments.Data.Repositories.AdminRepositories.Implementations
 
         public async Task<Clinic> GetByIdAsync(int Id)
         {
-            var clinic= await context.Clinics.SingleOrDefaultAsync(a => a.Id == Id);
+            var clinic = await context.Clinics.SingleOrDefaultAsync(a => a.Id == Id);
             if (clinic is null)
             {
                 return null!;
@@ -19,6 +19,7 @@ namespace EasyAppointments.Data.Repositories.AdminRepositories.Implementations
         }
 
         public async Task<List<Clinic>> GetClinicByCityIdAsync(int ID) => await context.Clinics.Where(a => a.CityId == ID).ToListAsync();
+        public async Task<List<Clinic>> GetClinicByDoctorIdAsync(int ID) => await context.Clinics.Where(a => a.DoctorId == ID).ToListAsync();
 
         public async Task<int> RemoveAsync(Clinic medicalCenter)
         {

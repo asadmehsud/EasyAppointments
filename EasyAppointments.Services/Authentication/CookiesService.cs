@@ -9,10 +9,9 @@ namespace EasyAppointments.Services.Authentication
         {
             CookieOptions options = new CookieOptions
             {
-                HttpOnly = true,
-                Secure = true,
+               
                 Expires = expiryDate,
-                SameSite = SameSiteMode.None,
+                IsEssential=true
             };
             var context = contextAccessor.HttpContext;
             if (context != null)

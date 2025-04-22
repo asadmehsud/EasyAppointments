@@ -23,6 +23,7 @@ namespace EasyAppointments.Areas.Admin.Controllers
         public async Task<IActionResult> LoginAdmin(AdminLoginDto adminLoginDto)
         {
             var response = await aPIService.PostAsync(adminLoginDto, APIEndPoint.AdminAuthenticationEndPoint.Login);
+          
             return Json(response);
         }
     }

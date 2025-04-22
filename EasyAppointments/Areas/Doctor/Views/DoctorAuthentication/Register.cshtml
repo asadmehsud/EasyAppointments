@@ -1,0 +1,120 @@
+﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.DoctorRegisterDto
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <div class="account-content">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-12 col-lg-6 login-right">
+                        <div class="login-header">
+                            <h3>Doctor Register <a href="register.html">Not a Doctor?</a></h3>
+                        </div>
+
+                        <form id="FrmDoctor">
+                            @Html.HiddenFor(a => a.Id)
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.FirstName)
+                                @Html.TextBoxFor(a => a.FirstName, new { @class = "form-control", placeholder = "Enter First Name" })
+                                @Html.ValidationMessageFor(a => a.FirstName, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.LastName)
+                                @Html.TextBoxFor(a => a.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                                @Html.ValidationMessageFor(a => a.LastName, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.UserName)
+                                @Html.TextBoxFor(a => a.UserName, new { @class = "form-control", placeholder = "Enter UserName" })
+                                @Html.ValidationMessageFor(a => a.UserName, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Email)
+                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", placeholder = "Enter Email" })
+                                @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Contact)
+                                @Html.TextBoxFor(a => a.Contact, new { @class = "form-control", placeholder = "Enter Contact" })
+                                @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Password)
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                                @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.ConfirmPassword)
+                                @Html.TextBoxFor(a => a.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your Password" })
+                                @Html.ValidationMessageFor(a => a.ConfirmPassword, "", new { @style = "color:red" })
+                            </div>
+                            <div class="mb-0">
+                                <button class="btn btn-primary w-100" type="button" onclick="showConfirmationDialog()">Register</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @section LoadFiles{
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+              function showConfirmationDialog() {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        registerDoctor();
+                    }
+                });
+            }
+            function registerDoctor() {
+                debugger;
+                if ($("#FrmDoctor").valid()) {
+                    var frmData = new FormData(document.getElementById('FrmDoctor'));
+                    $.ajax({
+                        type: 'post',
+                        url: '/Doctor/DoctorAuthentication/RegisterDoctor',
+                        processData: false,
+                        contentType: false,
+                        data: frmData,
+                        success: function (result) {
+                            debugger;
+                            if (result == true) {
+                                Swal.fire(
+                                    'Success!',
+                                    `Operation successfull.`,
+                                    'success'
+                                );
+                            }
+                           else{
+                               Swal.fire(
+                                   'Error!',
+                                   'Error Submitting Form.',
+                                   'Error'
+                               );
+                           }
+                        }
+                    });
+                }
+
+            }
+        </script>
+    }
+</div>

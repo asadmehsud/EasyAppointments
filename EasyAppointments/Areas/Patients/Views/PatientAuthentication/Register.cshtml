@@ -1,0 +1,112 @@
+﻿@model EasyAppointments.Services.DTOs.PatientDTOs.PatientRegisterDto
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Patients/Views/Shared/_PatientLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="account-content">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-12 col-lg-6 login-right" id="mainDiv">
+                        <div class="login-header">
+                            <h3>Register <span>Patient</span></h3>
+                        </div>
+                        @* Main Div *@
+                        <form id="FrmPatient" method="post">
+                            @Html.HiddenFor(a => a.PatientId)
+                            <div class="mb-3">
+                                @Html.LabelFor(a => a.PatientName, "Name")
+                                @Html.TextBoxFor(a => a.PatientName, new { @class = "form-control", placeholder = "Enter your Name" })
+                                @Html.ValidationMessageFor(a => a.PatientName, "", new { @style = "color:red" })
+                            </div>
+                            <div class="mb-3">
+                                <label>Contact</label>
+                                @Html.TextBoxFor(a => a.Contact, new { @class = "form-control", placeholder = "Enter your Contact No" })
+                                @Html.ValidationMessageFor(a => a.Contact, "", new { @style = "color:red" })
+                            </div>
+                            <div class="mb-3">
+                                <label>Email</label>
+                                @Html.TextBoxFor(a => a.Email, new { @class = "form-control", placeholder = "Enter your Email" })
+                                @Html.ValidationMessageFor(a => a.Email, "", new { @style = "color:red" })
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Password</label>
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter your Password" })
+                                @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
+                            </div>
+                            <div class="text-end">
+                                <a class="forgot-link" href="login.html">Already have an account?</a>
+                            </div>
+                            <div style="display:flex">
+                                <button class="btn btn-primary" type="button" onclick="showConfirmationDialog()" style="margin-right:5px">Signup</button>
+                                <button class="btn btn-secondary" type="reset">Cancel</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section LoadFiles {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+        @* <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+
+            function showConfirmationDialog() {
+                Swal.fire({
+                    title: `Confirmation`,
+                    text: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       registerPatient();
+                    }
+                });
+            }
+            function registerPatient(){
+                debugger;
+                if($("#FrmPatient").valid()){
+                var frmData = new FormData(document.getElementById('FrmPatient'));
+                $.ajax({
+                type: 'post',
+                url: '/Patients/PatientAuthentication/RegisterPatient',
+                processData: false,
+                contentType: false,
+                data: frmData,
+                success: function (result) {
+                    debugger;
+                    if (result == true) {
+                        Swal.fire(
+                            'Success!',
+                            `Operation successfull.`,
+                            'success'
+                        );
+                    }
+                   else{
+                       Swal.fire(
+                            'Error!',
+                            `Error Submitting Form.`,
+                            'Error'
+                       );
+                   }
+                }
+            });
+                }
+            }
+        </script>
+    }
+</div>
+
+

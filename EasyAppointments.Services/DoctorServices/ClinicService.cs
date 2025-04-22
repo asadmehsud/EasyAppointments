@@ -3,9 +3,9 @@ using EasyAppointments.Core.Interfaces.AdminInterfaces;
 using EasyAppointments.Data.Entities.AdminEntities;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
-using EasyAppointments.Services.DTOs.AdminDTOs.ClinicDTOs;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 
-namespace EasyAppointments.Services.AdminServices
+namespace EasyAppointments.Services.DoctorServices
 {
     public class ClinicService(IClinicRepository clinicRepository, IMapper mapper, IProvinceRepository provinceRepository, ICityRepository cityRepository)
     {
@@ -20,7 +20,7 @@ namespace EasyAppointments.Services.AdminServices
         public async Task<GetClinicDto> GetByIdAsync(int Id)
         {
             var clinicDto = mapper.Map<GetClinicDto>(await clinicRepository.GetByIdAsync(Id));
-           clinicDto.Provinces = mapper.Map<List<ProvinceDto>>(await provinceRepository.GetAllAsync());
+            clinicDto.Provinces = mapper.Map<List<ProvinceDto>>(await provinceRepository.GetAllAsync());
             clinicDto.City = mapper.Map<GetCityDto>(await cityRepository.GetByIdAsync(clinicDto.CityId));
             return clinicDto;
         }
@@ -29,22 +29,29 @@ namespace EasyAppointments.Services.AdminServices
             var clincis = await clinicRepository.GetAllAsync();
             var provinces = await provinceRepository.GetAllAsync();
             var cities = await cityRepository.GetAllAsync();
-            var viewClinic= from pr in provinces
-                                    join ct in cities
-                                    on pr.Id equals ct.ProvinceId
-                                    join cln in clincis
-                                    on pr.Id equals cln.ProvinceId
-                                    select new GetClinicDto
-                                    {
-                                        Id = cln.Id,
-                                        ClinicName = cln.ClinicName,
-                                        ProvinceName = pr.ProvinceName,
-                                        CityName = ct.Name,
-                                        Address = cln.Address,
-                                        Status = cln.Status,
-                                    };
+            var viewClinic = from pr in provinces
+                             join ct in cities
+                             on pr.Id equals ct.ProvinceId
+                             join cln in clincis
+                             on pr.Id equals cln.ProvinceId
+                             select new GetClinicDto
+                             {
+                                 Id = cln.Id,
+                                 ClinicName = cln.ClinicName!,
+                                 ProvinceName = pr.ProvinceName!,
+                                 CityName = ct.Name!,
+                                 Address = cln.Address!,
+                             };
             return mapper.Map<List<GetClinicDto>>(viewClinic);
-
         }
+        public async Task<GetClinicDto> GetClinicDetails(int doctorId)
+        {
+            GetClinicDto clinicDto = new GetClinicDto();
+            clinicDto.Clinics = mapper.Map<List<GetClinicDto>>(await clinicRepository.GetClinicByDoctorIdAsync(doctorId));
+            clinicDto.Provinces = mapper.Map<List<ProvinceDto>>(await provinceRepository.GetAllAsync());
+            clinicDto.Cities = mapper.Map<List<GetCityDto>>(await cityRepository.GetAllAsync());
+            return clinicDto;
+        }
+
     }
 }
