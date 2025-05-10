@@ -1,4 +1,5 @@
 using EasyAppointments.API;
+using EasyAppointments.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAPIService, APIService>();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddScoped<CookiesService>();
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 
@@ -19,7 +20,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -29,10 +29,10 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Shared}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

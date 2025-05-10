@@ -24,14 +24,14 @@
                                 @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
                             </div>
                             <div class="text-end">
-                                <a class="forgot-link" href="forgot-password.html">Forgot Password ?</a>
+                                <a class="forgot-link" href="forgot-password.html" tabindex="10">Forgot Password ?</a>
                             </div>
                             <div style="display:flex">
                                 <button class="btn btn-primary w-50" type="button" onclick="showConfirmationDialog()" style="margin-right:5px">Login</button>
                                 <button class="btn btn-secondary w-50" type="reset">Cancel</button>
                             </div>
-
-                            <div class="text-center dont-have">Don’t have an account? <a href="/Patients/Patient/Index">Register</a></div>
+                             
+                            <div class="text-center dont-have">Don’t have an account? <a href="@Url.Action("Register", "PatientAuthentication", new { area = "Patients" })">Register</a></div>
                         </form>
                     </div>
                 </div>

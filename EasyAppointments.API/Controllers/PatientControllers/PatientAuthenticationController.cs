@@ -1,6 +1,6 @@
 ﻿using EasyAppointments.Data.Repositories;
 using EasyAppointments.Services.DTOs.PatientDTOs;
-using EasyAppointments.Services.PatientServices;
+using EasyAppointments.Services.Services.PatientServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.PatientControllers
@@ -18,8 +18,12 @@ namespace EasyAppointments.API.Controllers.PatientControllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(PatientLoginDto patientLoginDto)
         {
-            var response = await patientAuthenticationService.PatientLoginAsync(patientLoginDto);
-            return response == (int)ResponseType.Success ? Ok(response) : BadRequest(response);
+            var (status, token) = await patientAuthenticationService.PatientLoginAsync(patientLoginDto);
+            if (status == (int)ResponseType.Success && token != null)
+            {
+                return Ok(token);
+            }
+            return BadRequest(status);
         }
     }
 }

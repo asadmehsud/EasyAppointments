@@ -25,9 +25,6 @@ namespace EasyAppointments.Services.DTOs.AdminDTOs
 
         [Required(ErrorMessage = "Required")]
         public string Password { get; set; } = default!;
-
-        [Required(ErrorMessage = "Required")]
-        public string ConfirmPassword { get; set; } = default!;
         public Role Role { get; set; } = default!;
     }
 }

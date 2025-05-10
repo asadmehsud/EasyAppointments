@@ -32,7 +32,7 @@
             <nav class="dashboard-menu">
                 <ul>
                     <li class="nav-link active">
-                        <a href="doctor-dashboard.html">
+                        <a href="@Url.Action("Dashboard","DoctorDashboard",new{area="Doctor" ,title="Dashboard" })">
                             <i class="fa-solid fa-shapes"></i>
                             <span>Dashboard</span>
                         </a>
@@ -118,7 +118,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="login.html">
+                        <a href="@Url.Action("Login","DoctorAuthentication",new{area="Doctor" })">
                             <i class="fa-solid fa-calendar-check"></i>
                             <span>Logout</span>
                         </a>

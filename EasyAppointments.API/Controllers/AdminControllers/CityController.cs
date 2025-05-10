@@ -1,5 +1,5 @@
-﻿using EasyAppointments.Services.AdminServices;
-using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
+﻿using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
+using EasyAppointments.Services.Services.AdminServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.AdminControllers

@@ -15,8 +15,6 @@ namespace EasyAppointments.Services.DTOs.DoctorDTOs
         [Required(ErrorMessage = "Required")]
         public string Password { get; set; } = default!;
         [Required(ErrorMessage = "Required")]
-        public string ConfirmPassword { get; set; } = default!;
-        [Required(ErrorMessage = "Required")]
         [MaxLength(11)]
         public string Contact { get; set; } = default!;
         [Required(ErrorMessage = "Required")]

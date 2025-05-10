@@ -11,5 +11,6 @@ namespace EasyAppointments.Core.Interfaces.AdminInterfaces
         Task<List<Clinic>> GetClinicByCityIdAsync(int ID);
         Task<Clinic> GetByIdAsync(int Id);
         Task<List<Clinic>> GetClinicByDoctorIdAsync(int ID);
+        Task<Clinic> GetClinicByIdAndDoctorAsync(int clinicId, int doctorId);
     }
 }

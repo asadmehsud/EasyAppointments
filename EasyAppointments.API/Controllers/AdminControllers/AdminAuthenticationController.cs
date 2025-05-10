@@ -1,6 +1,6 @@
 ﻿using EasyAppointments.Data.Repositories;
-using EasyAppointments.Services.AdminServices;
 using EasyAppointments.Services.DTOs.AdminDTOs;
+using EasyAppointments.Services.Services.AdminServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.AdminControllers
@@ -18,8 +18,12 @@ namespace EasyAppointments.API.Controllers.AdminControllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(AdminLoginDto adminLoginDto)
         {
-            var response = await adminAuthenticationService.AdminLoginAsync(adminLoginDto);
-            return response == (int)ResponseType.Success ? Ok(response) : BadRequest(response);
+            var (status,token) = await adminAuthenticationService.AdminLoginAsync(adminLoginDto);
+            if (status == (int)ResponseType.Success && token != null)
+            {
+                return Ok(token);
+            }
+            return BadRequest(status);
         }
     }
 }

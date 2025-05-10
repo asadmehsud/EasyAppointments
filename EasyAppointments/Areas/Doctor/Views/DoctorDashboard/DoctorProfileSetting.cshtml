@@ -17,7 +17,7 @@
                     <a id="LinkBasicDetails" class="nav-link" onclick="basicDetails()">Basic Details</a>
                 </li>
                 <li class="nav-item">
-                    <a id="LinkEducationcDetails" class="nav-link" onclick="educationDetails()">Education</a>
+                    <a id="LinkEducationDetails" class="nav-link" onclick="educationDetails()">Education</a>
                 </li>
                 <li class="nav-item">
                     <a id="LinkClinicDetails" class="nav-link" onclick="clinicDetails()">Clinics</a>
@@ -66,7 +66,6 @@
                 });
             }
             function saveDoctor() {
-                debugger;
                 if ($("#FrmDoctor").valid()) {
                     var frmData = new FormData(document.getElementById('FrmDoctor'));
                     $.ajax({
@@ -96,7 +95,6 @@
                 }
             }
             function saveClinic() {
-                debugger;
                 if ($("#FrmClinic").valid()) {
                     var frmData = new FormData(document.getElementById('FrmClinic'));
                     $.ajax({
@@ -126,7 +124,6 @@
                 }
             }
             function saveSchedule() {
-                debugger;
                 if ($("#FrmSchedule").valid()) {
                     var frmData = new FormData(document.getElementById('FrmSchedule'));
                     $.ajax({
@@ -175,7 +172,7 @@
                     type:'get',
                     url:'/Doctor/Doctor/EducationDetails',
                     success:function(response){
-                        $("#LinkEducationcDetails").addClass("active");
+                        $("#LinkEducationDetails").addClass("active");
                          $("#LinkBasicDetails").removeClass("active");
                         $("#LinkClinicDetails").removeClass("active");
                         $("#LinkScheduleDetails").removeClass("active");

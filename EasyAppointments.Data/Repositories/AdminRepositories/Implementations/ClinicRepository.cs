@@ -17,6 +17,15 @@ namespace EasyAppointments.Data.Repositories.AdminRepositories.Implementations
             }
             return clinic;
         }
+        public async Task<Clinic> GetClinicByIdAndDoctorAsync(int clinicId, int doctorId)
+        {
+            var clinic = await context.Clinics.SingleOrDefaultAsync(a => a.Id == clinicId && a.DoctorId == doctorId);
+            if (clinic is null)
+            {
+                return null!;
+            }
+            return clinic;
+        }
 
         public async Task<List<Clinic>> GetClinicByCityIdAsync(int ID) => await context.Clinics.Where(a => a.CityId == ID).ToListAsync();
         public async Task<List<Clinic>> GetClinicByDoctorIdAsync(int ID) => await context.Clinics.Where(a => a.DoctorId == ID).ToListAsync();

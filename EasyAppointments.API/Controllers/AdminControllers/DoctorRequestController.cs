@@ -1,4 +1,4 @@
-﻿using EasyAppointments.Services.DoctorServices;
+﻿using EasyAppointments.Services.Services.DoctorServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.AdminControllers

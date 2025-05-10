@@ -29,9 +29,6 @@ namespace EasyAppointments.Areas.Patients.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> CheckPatient(PatientDto patient)
-        {
-            return Json(await aPIService.PostAsync(patient, APIEndPoint.PatientEndPoint.Login));
-        }
+     
     }
 }

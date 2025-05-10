@@ -20,5 +20,7 @@ namespace EasyAppointments.Services.DTOs.DoctorDTOs
         [Required(ErrorMessage = "Required")]
         public List<DayDto> Days { get; set; } = default!;
         public List<SaveClinicDto> Clinics { get; set; } = default!;
+        public string DayName { get; set; } = default!;
+        public string ClinicName { get; set; } = default!;
     }
 }

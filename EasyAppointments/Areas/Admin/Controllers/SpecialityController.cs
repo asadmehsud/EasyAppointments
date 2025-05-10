@@ -27,19 +27,20 @@ namespace EasyAppointments.Areas.Admin.Controllers
         }
         public async Task<IActionResult> GetSpecialities()
         {
+            List<SpecialityDto> specialities = new List<SpecialityDto>();
             var jsonData = await aPIService.GetAsync(APIEndPoint.SpecialityEndPoint.GetAll);
-            if (jsonData is not null)
+            if (!string.IsNullOrWhiteSpace(jsonData))
             {
-                var specialities = JsonConvert.DeserializeObject<List<SpecialityDto>>(jsonData);
-                return View("_SpecialityList", specialities);
+                specialities = JsonConvert.DeserializeObject<List<SpecialityDto>>(jsonData)!;
+                return PartialView("_SpecialityList", specialities);
             }
-            return View();
+            return PartialView("_SpecialityList", specialities);
         }
 
         public async Task<IActionResult> UpdateSpeciality(int SpecialityId)
         {
             var jsonData = await aPIService.GetByIdAsync(APIEndPoint.SpecialityEndPoint.GetById + SpecialityId);
-            if (jsonData is not null)
+            if (!string.IsNullOrWhiteSpace(jsonData))
             {
                 var speciality = JsonConvert.DeserializeObject<SpecialityDto>(jsonData);
                 return View("_EditSpeciality", speciality);

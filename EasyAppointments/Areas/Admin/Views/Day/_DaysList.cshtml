@@ -28,7 +28,7 @@
                                                         <td>@item.WeekDay</td>
                                                         <td>
                                                             <button class="btn btn-outline-primary" onclick="updateDay(@item.Id)">  <i class="fas fa-edit"></i> </button>
-                                                            <button class="btn btn-outline-danger" onclick="showConfirmationDialog('Deletion',@item.Id);"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-outline-danger" onclick="deleteDay(@item.Id);"><i class="fa fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                                 }

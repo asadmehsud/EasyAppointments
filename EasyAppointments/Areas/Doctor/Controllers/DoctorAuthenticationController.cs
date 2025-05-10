@@ -1,12 +1,14 @@
-﻿using EasyAppointments.API;
+﻿using System.Net;
+using EasyAppointments.API;
 using EasyAppointments.Data.Repositories;
+using EasyAppointments.Services.Authentication;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.Areas.Doctor.Controllers
 {
     [Area("Doctor")]
-    public class DoctorAuthenticationController(IAPIService aPIService) : Controller
+    public class DoctorAuthenticationController(IAPIService aPIService, CookiesService cookiesService) : Controller
     {
         public IActionResult Register()
         {
@@ -23,13 +25,13 @@ namespace EasyAppointments.Areas.Doctor.Controllers
         }
         public async Task<IActionResult> LoginDoctor(DoctorLoginDto doctorLoginDto)
         {
-            var response = Convert.ToInt32(await aPIService.PostAsync(doctorLoginDto, APIEndPoint.DoctorAuthenticationEndPoint.Login));
-            if (response == (int)ResponseType.Success)
+            var (statusCode, jsonTpken) = await aPIService.LoginAsync(doctorLoginDto, APIEndPoint.DoctorAuthenticationEndPoint.Login);
+            if (statusCode == HttpStatusCode.OK && !string.IsNullOrWhiteSpace(jsonTpken))
             {
-                HttpContext.Session.SetString("Identifier",doctorLoginDto.Identifier);
-                return Json(response);
+                cookiesService.AppendCookie(CookiesKey.AuthToken!, jsonTpken, DateTime.UtcNow.AddDays(1));
+                return Json(ResponseType.Success);
             }
-            return Json(response);
+            return Json(ResponseType.InvalidEmailOrContact);
         }
     }
-}
+} 

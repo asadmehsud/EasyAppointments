@@ -22,7 +22,7 @@ namespace EasyAppointments.Services.DTOs.DoctorDTOs
         [Required(ErrorMessage = "Required")]
         public string Email { get; set; } = default!;
         [Required(ErrorMessage = "Required")]
-        [MaxLength(13)]
+        [MaxLength(15)]
         public string CNIC { get; set; } = default!;
         [Required(ErrorMessage = "Required")]
         public string Address { get; set; } = default!;
@@ -35,12 +35,7 @@ namespace EasyAppointments.Services.DTOs.DoctorDTOs
 
         [Required(ErrorMessage = "Required")]
         public int Status { get; set; }
-        [Required(ErrorMessage = "Select Province")]
-        [Range(1, int.MaxValue)]
-        public int Province { get; set; }
-
-        public int City { get; set; }
-
+      
         [Required(ErrorMessage = "Required")]
         public string ZipCode { get; set; } = default!;
 

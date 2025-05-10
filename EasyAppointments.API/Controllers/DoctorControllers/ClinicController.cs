@@ -1,6 +1,7 @@
-﻿using EasyAppointments.Services.AdminServices;
-using EasyAppointments.Services.DoctorServices;
+﻿using EasyAppointments.Data.Repositories;
 using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
+using EasyAppointments.Services.Services.AdminServices;
+using EasyAppointments.Services.Services.DoctorServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.DoctorControllers
@@ -13,13 +14,13 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
         public async Task<IActionResult> Save(SaveClinicDto clinic)
         {
             var response = await clinicService.SaveAsync(clinic);
-            return response > 0 ? Ok(response) : BadRequest(response);
+            return response == (int)ResponseType.Success ? Ok(response) : BadRequest(response);
         }
         [HttpPut("UpdateClinic")]
         public async Task<IActionResult> Update(SaveClinicDto clinic)
         {
             var response = await clinicService.UpdateAsync(clinic);
-            return response > 0 ? Ok(response) : BadRequest(response);
+            return response == (int)ResponseType.Success ? Ok(response) : BadRequest(response);
         }
         [HttpGet("GetAllClinics")]
         public async Task<IActionResult> GetAll()
@@ -50,6 +51,18 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
         public async Task<IActionResult> GetClinicDetails(int doctorId)
         {
             var response = await clinicService.GetClinicDetails(doctorId);
+            return response is not null ? Ok(response) : NotFound();
+        }
+        [HttpGet("GetClinicByDoctor/{doctorId}")]
+        public async Task<IActionResult> GetClinicByDoctorId(int doctorId)
+        {
+            var response = await clinicService.GetClinicByDoctorId(doctorId);
+            return Ok(response);
+        }
+        [HttpGet("GetClinicByIdAndDoctor")]
+        public async Task<IActionResult> GetClinicByIdAndDoctor(int clinicId, int doctorId)
+        {
+            var response = await clinicService.GetClinicByIdAndDoctor(clinicId, doctorId);
             return response is not null ? Ok(response) : NotFound();
         }
     }

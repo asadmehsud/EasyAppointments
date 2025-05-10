@@ -12,7 +12,7 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-12 col-lg-6 login-right">
                         <div class="login-header">
-                            <h3>Doctor Register <a href="register.html">Not a Doctor?</a></h3>
+                            <h3>Doctor Register</h3>
                         </div>
 
                         <form id="FrmDoctor">
@@ -44,16 +44,15 @@
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(a => a.Password)
-                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter Password" })
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Create Password" })
                                 @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.ConfirmPassword)
-                                @Html.TextBoxFor(a => a.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your Password" })
-                                @Html.ValidationMessageFor(a => a.ConfirmPassword, "", new { @style = "color:red" })
+                            <div class="text-end">
+                                <a class="forgot-link" href="@Url.Action("Login","DoctorAuthentication",new{area="Doctor"})">Already have an account?</a>
                             </div>
-                            <div class="mb-0">
-                                <button class="btn btn-primary w-100" type="button" onclick="showConfirmationDialog()">Register</button>
+                            <div style="display:flex">
+                                <button class="btn btn-primary w-50" type="button" onclick="showConfirmationDialog()" style="margin-right:5px">Register</button>
+                                <button class="btn btn-secondary w-50" type="reset">Cancel</button>
                             </div>
                         </form>
 
@@ -96,17 +95,13 @@
                         data: frmData,
                         success: function (result) {
                             debugger;
-                            if (result == true) {
-                                Swal.fire(
-                                    'Success!',
-                                    `Operation successfull.`,
-                                    'success'
-                                );
+                            if (result == 0) {
+                               window.location.href="/Doctor/DoctorAuthentication/Login"
                             }
                            else{
                                Swal.fire(
                                    'Error!',
-                                   'Error Submitting Form.',
+                                   'Error Submitting Form Or Record may alredy exist',
                                    'Error'
                                );
                            }

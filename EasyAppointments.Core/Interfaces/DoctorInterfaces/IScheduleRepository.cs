@@ -8,6 +8,7 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Interfaces
         Task<int> UpdateAsync(Schedule schedule);
         Task<int> DeleteAsync(Schedule schedule);
         Task<Schedule> GetByIdAsync(int id);
+        Task<List<Schedule>> GetByDoctorIdAsync(int doctorId);
         Task<List<Schedule>> GetAllAsync();
     }
 }

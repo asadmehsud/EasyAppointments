@@ -1,6 +1,6 @@
 ﻿using EasyAppointments.Data.Entities.AdminEntities;
-using EasyAppointments.Services.AdminServices;
 using EasyAppointments.Services.DTOs.AdminDTOs;
+using EasyAppointments.Services.Services.AdminServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.AdminControllers
@@ -29,7 +29,7 @@ namespace EasyAppointments.API.Controllers.AdminControllers
             {
                 return Ok(specialities);
             }
-            return NotFound();
+            return NotFound(specialities);
         }
         [HttpGet("GetSpecialityById/{Id}")]
         public async Task<IActionResult> GetById(int Id)

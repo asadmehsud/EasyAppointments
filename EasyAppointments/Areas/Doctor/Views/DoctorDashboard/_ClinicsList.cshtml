@@ -1,0 +1,72 @@
+﻿@model List<EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs.GetClinicDto>
+<div class="dashboard-card w-100">
+	<div class="dashboard-card-head">
+		<div class="header-title">
+			<h5>Your Clinics</h5>
+		</div>
+		<div class="card-view-link">
+			<a href="invoices.html">View All</a>
+		</div>
+	</div>
+	<div class="dashboard-card-body">
+		<div class="table-responsive">
+			<table class="table dashboard-table">
+				<tbody>
+					@if (Model is null || !Model.Any())
+					{
+						<tr>
+							<td style="color:darkred">You have not registered your Clinic information.</td>
+							<td>
+								<button class="btn btn-outline-primary" onclick="insertClinic()">Insert</button>
+							</td>
+						</tr>
+					}
+					else
+					{
+						@foreach (var item in Model)
+						{
+							<tr>
+								<td>
+									<div class="patient-info-profile">
+										<a href="invoices.html" class="table-avatar">
+											<img src="/Assets/UserAssets/img/Easy Appointment Logo-01.png" alt="logo">
+										</a>
+										<div class="patient-name-info">
+											<h5><a href="invoices.html">Name</a></h5>
+											<span>@item.ClinicName</span>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="appointment-date-created">
+										<span class="paid-text">Province</span>
+										<h6>@item.ProvinceName</h6>
+									</div>
+								</td>
+								<td>
+									<div class="appointment-date-created">
+										<span class="paid-text">City</span>
+										<h6>@item.CityName</h6>
+									</div>
+								</td>
+								<td>
+									<div class="appointment-date-created">
+										<span class="paid-text">Address</span>
+										<h6>@item.Address</h6>
+									</div>
+								</td>
+								<td>
+									<div class="apponiment-view d-flex align-items-center">
+										<button class="btn btn-outline-primary" onclick="updateClinic(@item.Id,@item.DoctorId)"> <i class="fas fa-edit"></i></button>
+										<button class="btn btn-outline-danger" onclick="deleteClinic(@item.Id);"><i class="fa fa-trash"></i></button>
+									</div>
+								</td>
+							</tr>
+						}
+
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

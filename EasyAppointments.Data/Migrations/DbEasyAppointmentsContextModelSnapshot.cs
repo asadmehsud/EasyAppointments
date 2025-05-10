@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EasyAppointments.Migrations
+namespace EasyAppointments.Data.Migrations
 {
     [DbContext(typeof(DbEasyAppointmentsContext))]
     partial class DbEasyAppointmentsContextModelSnapshot : ModelSnapshot
@@ -299,10 +299,10 @@ namespace EasyAppointments.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Doctor")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Patient")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Time")

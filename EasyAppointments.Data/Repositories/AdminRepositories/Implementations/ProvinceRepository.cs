@@ -31,8 +31,16 @@ namespace EasyAppointments.Data.Repositories.AdminRepositories.Implementations
 
         public async Task<int> UpdateAsync(Province province)
         {
-            context.Provinces.Update(province);
-            return await context.SaveChangesAsync();
+            try
+            {
+                context.Provinces.Update(province);
+                return await context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

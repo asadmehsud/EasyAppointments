@@ -22,7 +22,7 @@
                         <div class="col-sm">
                             <div id="SpecialityFormDiv">
                                 @* Div For Rendering Speciality Form *@
-                                @Html.Partial("_EditSpeciality")
+                                @await Html.PartialAsync("_EditSpeciality")
                             </div>
                         </div>
                     </div>
@@ -41,12 +41,7 @@
         <script src="/Assets/AdminAssets/plugins/datatables/datatables.min.js" type="beeb7ac533808a44d0b8d2f5-text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
         <script>
-
-
-
             function showConfirmationDialog(action, Id) {
                 Swal.fire({
                     title: `Confirmation`,

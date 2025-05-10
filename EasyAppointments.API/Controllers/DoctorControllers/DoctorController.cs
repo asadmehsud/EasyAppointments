@@ -1,6 +1,7 @@
-﻿using EasyAppointments.Services.AdminServices;
-using EasyAppointments.Services.DoctorServices;
+﻿using EasyAppointments.Data.Repositories;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
+using EasyAppointments.Services.Services.AdminServices;
+using EasyAppointments.Services.Services.DoctorServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.DoctorControllers
@@ -11,9 +12,8 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
         [HttpPost("SaveDoctor")]
         public async Task<IActionResult> Save(DoctorDto doctor)
         {
-            int doctorId = await doctorService.SaveAsync(doctor);
-            HttpContext.Session.SetInt32("DoctorId", doctorId);
-            return doctorId > 0 ? Ok(doctorId) : BadRequest();
+            var response = await doctorService.SaveAsync(doctor);
+            return response == (int)ResponseType.Success ? Ok(response) : BadRequest(response);
         }
         [HttpPut("UpdateDoctor")]
         public async Task<IActionResult> Update([FromBody] DoctorDto doctor)
@@ -21,24 +21,8 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
             var response = await doctorService.UpdateAsync(doctor);
             return response > 0 ? Ok(response) : BadRequest(response);
         }
-        [HttpGet("GetAddress")]
-        public async Task<IActionResult> LoadLocationDetails()
-        {
-            DoctorDto doctor = new DoctorDto();
-            doctor.Id = Convert.ToInt32(HttpContext.Session.GetInt32("DoctorId"));
-            //  doctor.Provinces = await provinceServices.GetAllAsync();
-            doctor.Cities = await cityService.GetAllAsync();
-            doctor.Clinics = await clinicService.GetAllAsync();
-            return Ok(doctor);
-        }
-        [HttpGet("GetSpecialities")]
-        public async Task<IActionResult> LoadSpecialitiesDetails()
-        {
-            DoctorDto doctor = new DoctorDto();
-            doctor.Id = Convert.ToInt32(HttpContext.Session.GetInt32("DoctorId"));
-            doctor.Specialities = await specialityService.GetAllAsync();
-            return Ok(doctor);
-        }
+       
+       
         [HttpGet("GetCityByProvince/{provinceId}")]
         public async Task<IActionResult> GetCityByProvince(int provinceId)
         {
@@ -60,13 +44,7 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
             var doctor = await doctorService.GetByIdAsync(Id);
             return doctor is not null ? Ok(doctor) : NotFound(doctor);
         }
-        [HttpGet("GetDoctorByIdentifier/{Identifier}")]
-        public async Task<IActionResult> GetByIdentifier(string Identifier)
-        {
-
-            var doctor = await doctorService.GetByIdentifieAsync(Identifier);
-            return doctor is not null ? Ok(doctor) : NotFound(doctor);
-        }
+      
         [HttpGet("GetAllDoctors")]
         public async Task<IActionResult> GetAll()
         {
@@ -74,10 +52,11 @@ namespace EasyAppointments.API.Controllers.DoctorControllers
             return doctors.Any() ? Ok(doctors) : NotFound(doctors);
         }
 
-        [HttpGet("Login")]
-        public async Task<IActionResult> CheckDoctor(DoctorDto doctor)
+        [HttpDelete("Delete/{Id}")]
+        public async Task<IActionResult> Delete(int Id)
         {
-            return Ok(await doctorService.LoginAsync(doctor));
+            var response = await doctorService.DeleteAsync(Id);
+            return response == 1 ? Ok(response) : NotFound(response);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EasyAppointments.Services.DTOs.PatientDTOs;
-using EasyAppointments.Services.PatientServices;
+using EasyAppointments.Services.Services.DoctorServices;
+using EasyAppointments.Services.Services.PatientServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAppointments.API.Controllers.PatientControllers
@@ -20,11 +21,29 @@ namespace EasyAppointments.API.Controllers.PatientControllers
             var response = await patientService.UpdateAsync(patient);
             return response > 0 ? Ok(response) : BadRequest(response);
         }
-        [HttpPost("Login")]
-        public async Task<IActionResult> CheckPatient(PatientDto patient)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllPatients()
         {
-            var response = await patientService.LoginAsync(patient);
-            return response is true ? Ok(response) : NotFound(response);
+            var response = await patientService.GetAllAsync();
+            return response is not null ? Ok(response) : NotFound(response);
+        }
+        [HttpDelete("Delete/{Id}")]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var response = await patientService.DeleteAsync(Id);
+            return response == 1 ? Ok(response) : NotFound(response);
+        }
+        [HttpGet("GetById/{Id}")]
+        public async Task<IActionResult> GetPatientById(int Id)
+        {
+            var response = await patientService.GetByIdAsync(Id);
+            return response is not null ? Ok(response) : NotFound(response);
+        }
+        [HttpGet("GetByIdentifier/{identifier}")]
+        public async Task<IActionResult> GetPatientByIdentifier(string identifier)
+        {
+            var response = await patientService.GetByIdentifierAsync(identifier);
+            return response is not null ? Ok(response) : NotFound(response);
         }
     }
 }

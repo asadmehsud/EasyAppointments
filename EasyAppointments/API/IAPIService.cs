@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 
 namespace EasyAppointments.API
@@ -10,6 +11,7 @@ namespace EasyAppointments.API
         Task<string> DeleteAsync(string aPiEndPoint);
         Task<string> GetAsync(string aPiEndPoint);
         Task<string> GetByIdAsync(string aPiEndPoint);
+        Task<(HttpStatusCode, string)> LoginAsync(object model, string aPiEndPoint);
     }
     public class APIService : IAPIService
     {
@@ -38,6 +40,18 @@ namespace EasyAppointments.API
             {
                 var response = await client.GetAsync(baseUrl + aPiEndPoint);
                 return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        public async Task<(HttpStatusCode, string)> LoginAsync(object model, string aPiEndPoint)
+        {
+            using (var client = new HttpClient())
+            {
+                var jsonData = JsonConvert.SerializeObject(model);
+                var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(baseUrl + aPiEndPoint, content);
+                var token = await response.Content.ReadAsStringAsync();
+                return (response.StatusCode, token);
             }
         }
 

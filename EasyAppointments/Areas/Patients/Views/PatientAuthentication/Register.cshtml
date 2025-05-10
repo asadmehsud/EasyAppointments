@@ -34,11 +34,11 @@
 
                             <div class="mb-3">
                                 <label>Password</label>
-                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Enter your Password" })
+                                @Html.TextBoxFor(a => a.Password, new { @class = "form-control", placeholder = "Create  Password" })
                                 @Html.ValidationMessageFor(a => a.Password, "", new { @style = "color:red" })
                             </div>
                             <div class="text-end">
-                                <a class="forgot-link" href="login.html">Already have an account?</a>
+                                <a class="forgot-link" href="@Url.Action("Login","PatientAuthentication",new{area="Patients"})">Already have an account?</a>
                             </div>
                             <div style="display:flex">
                                 <button class="btn btn-primary" type="button" onclick="showConfirmationDialog()" style="margin-right:5px">Signup</button>
@@ -88,11 +88,7 @@
                 success: function (result) {
                     debugger;
                     if (result == true) {
-                        Swal.fire(
-                            'Success!',
-                            `Operation successfull.`,
-                            'success'
-                        );
+                       window.location.href="/Patients/PatientAuthentication/Login"
                     }
                    else{
                        Swal.fire(

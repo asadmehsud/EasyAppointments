@@ -18,19 +18,8 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
             }
             return doctor;
         }
-        public async Task<Doctor> GetByIdentifierAsync(string identifier)
-        {
-            var doctor = await context.Doctors.FirstOrDefaultAsync(op => op.Email == identifier || op.Contact == identifier || op.UserName == identifier);
-            if (doctor is null)
-            {
-                return null!;
-            }
-            return doctor;
-        }
-
         public async Task<List<Doctor>> GetByStatusAsync(int Status) => await context.Doctors.Where(a => a.Status == Status).ToListAsync();
 
-        public Task<Doctor> LoginAsync(Doctor doctor) => context.Doctors.Where(a => a.Contact == doctor.Contact && a.Password == doctor.Password).FirstOrDefaultAsync()!;
         public async Task<int> DeleteAsync(Doctor doctor)
         {
             context.Doctors.Remove(doctor);
@@ -38,12 +27,17 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
         }
         public async Task<int> SaveAsync(Doctor doctor)
         {
-            var doc = await context.Doctors.AddAsync(doctor);
-            await context.SaveChangesAsync();
-            int doctorId = doc.Entity.Id;
-            return doctorId;
+            try
+            {
+                await context.Doctors.AddAsync(doctor);
+                await context.SaveChangesAsync();
+                return (int)ResponseType.Success;
+            }
+            catch (Exception)
+            {
+                return (int)ResponseType.InternalServerError;
+            }
         }
-
         public async Task<int> UpdateAsync(Doctor doctor)
         {
             try
@@ -63,8 +57,7 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
             }
             catch (Exception)
             {
-
-                throw;
+                return (int)ResponseType.InternalServerError;
             }
         }
     }

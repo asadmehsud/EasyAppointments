@@ -1,5 +1,4 @@
 ﻿using EasyAppointments.API;
-using EasyAppointments.Services.AdminServices;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

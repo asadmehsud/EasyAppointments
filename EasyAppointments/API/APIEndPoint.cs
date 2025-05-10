@@ -28,6 +28,8 @@
             public static string GetById { get { return "Clinic/GetClinicById/"; } }
             public static string GetClinicByCity { get { return "Clinic/GetClinicByCityId/"; } }
             public static string GetClinicDetails { get { return "Clinic/GetClinicDetails/"; } }
+            public static string GetClinicByDoctor { get { return "Clinic/GetClinicByDoctor/"; } }
+            public static string GetClinicByIdAndDoctor { get { return "Clinic/GetClinicByIdAndDoctor?"; } }
         }
         public class TimeEndPoint
         {
@@ -78,30 +80,22 @@
         }
         public class DoctorEndPoint
         {
-            public static string Post { get { return "Doctor/SaveDoctor"; } }
             public static string Update { get { return "Doctor/UpdateDoctor"; } }
-            public static string GetAddress { get { return "Doctor/GetAddress"; } }
             public static string GetAll { get { return "Doctor/GetAllDoctors"; } }
-            public static string GetSpecialities { get { return "Doctor/GetSpecialities"; } }
-            public static string Login { get { return "Doctor/Login"; } }
             public static string GetCityByProvince { get { return "Doctor/GetCityByProvince/"; } }
             public static string GetById { get { return "Doctor/GetDoctorById/"; } }
-            public static string GetByIdentifier { get { return "Doctor/GetDoctorByIdentifier/"; } }
             public static string GetClinicByCity { get { return "Doctor/GetClinicByCity/"; } }
+            public static string Delete { get { return "Doctor/Delete/"; } }
         }
         public class ScheduleEndPoint
         {
             public static string Post { get { return "Schedule/SaveSchedule"; } }
-            public static string Update { get { return "Schedule/UpdateDoctor"; } }
+            public static string Update { get { return "Schedule/UpdateSchedule"; } }
             public static string GetScheduleDetails { get { return "Schedule/GetScheduleDetails/"; } }
-
-            public static string GetAll { get { return "Doctor/GetAllDoctors"; } }
-            public static string GetSpecialities { get { return "Doctor/GetSpecialities"; } }
-            public static string Login { get { return "Doctor/Login"; } }
-            public static string GetCityByProvince { get { return "Doctor/GetCityByProvince/"; } }
-            public static string GetById { get { return "Doctor/GetById/Id="; } }
-            public static string GetByIdentifier { get { return "Doctor/GetDoctorByIdentifier/"; } }
-            public static string GetClinicByCity { get { return "Doctor/GetClinicByCity/"; } }
+            public static string GetScheduleList { get { return "Schedule/GetScheduleList/"; } }
+            public static string GetById { get { return "Schedule/GetById/"; } }
+            public static string GetToInsertSchedule { get { return "Schedule/GetToInsertSchedule/"; } }
+            public static string DeleteSchedule { get { return "Schedule/DeleteSchedule/"; } }
         }
         public class DoctorDashboardEndPoint
         {
@@ -110,18 +104,27 @@
         public class AppointmentEndPoint
         {
             public static string SearchDoctor { get { return "Appointment/SearchDoctor"; } }
-            public static string Book { get { return "Appointment/BookAppointment/"; } }
+            public static string GetAppointmentDetails { get { return "Appointment/GetAppointmentDetails?doctorId="; } }
+            public static string Save { get { return "Appointment/Save "; } }
+            public static string Update { get { return "Appointment/Update"; } }
         }
         public class PatientEndPoint
         {
             public static string Post { get { return "Patient/SavePatient"; } }
             public static string Update { get { return "Patient/UpdatePatient"; } }
-            public static string Login { get { return "Patient/Login"; } }
+            public static string GetAll { get { return "Patient/GetAll"; } }
+            public static string GetById { get { return "Patient/GetById/"; } }
+            public static string GetByIdentifier { get { return "Patient/GetByIdentifier/"; } }
+            public static string Delete { get { return "Patient/Delete/"; } }
         }
         public class PatientAuthenticationEndPoint
         {
             public static string Post { get { return "PatientAuthentication/Register"; } }
             public static string Login { get { return "PatientAuthentication/Login"; } }
+        }
+        public class HomePageEndPoint
+        {
+            public static string GetData { get { return "HomePage/GetData"; } }
         }
     }
 }

@@ -8,7 +8,6 @@ namespace EasyAppointments.Services.DTOs.AdminDTOs
         [Required(ErrorMessage = "Required")]
         public string Name { get; set; } = default!;
         [Required(ErrorMessage = "Select Status")]
-        [Range(1, int.MaxValue)]
-        public int Status { get; set; }
+        public int? Status { get; set; }
     }
 }

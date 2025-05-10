@@ -6,8 +6,8 @@ namespace EasyAppointments.Data.Entities.PatientEntities
     {
         [Key]
         public int Id { get; set; }
-        public int Doctor { get; set; }
-        public int Patient { get; set; }
+        public int DoctorId { get; set; }
+        public int PatientId { get; set; }
         public string? Time { get; set; }
         public string? Date { get; set; }
 

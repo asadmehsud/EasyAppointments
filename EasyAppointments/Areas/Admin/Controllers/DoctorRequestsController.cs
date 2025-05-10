@@ -1,5 +1,4 @@
 ﻿using EasyAppointments.API;
-using EasyAppointments.Data.Entities.DoctorEntities;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,12 +28,8 @@ namespace EasyAppointments.Areas.Admin.Controllers
         public async Task<IActionResult> ViewPDF(int Id)
         {
             var jsonData = await aPIService.GetByIdAsync(APIEndPoint.DoctorEndPoint.GetById + Id);
-            if (jsonData is not null)
-            {
-                var doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonData);
-                return File(doctor!.QualificationDocuments, "application/pdf");
-            }
-            return View();
+            var doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonData);
+            return File(doctor!.QualificationDocuments, "application/pdf");
         }
     }
 }

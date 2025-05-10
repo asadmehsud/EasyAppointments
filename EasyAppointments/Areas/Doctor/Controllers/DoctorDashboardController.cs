@@ -1,5 +1,9 @@
-﻿using EasyAppointments.API;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using EasyAppointments.API;
+using EasyAppointments.Data.Entities.DoctorEntities;
 using EasyAppointments.Services.DTOs.DoctorDTOs;
+using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,9 +15,11 @@ namespace EasyAppointments.Areas.Doctor.Controllers
         public async Task<IActionResult> Dashboard(string title)
         {
             var viewModel = await GetDoctor(title);
-            HttpContext.Session.SetInt32("DoctorId", viewModel.doctorDto!.Id);
-            var clinics = await aPIService.GetByIdAsync(APIEndPoint.ClinicEndPoint.GetClinicDetails + viewModel.doctorDto!.Id);
-            return viewModel is null ? View() : View(viewModel);
+            var clinics = await aPIService.GetByIdAsync(APIEndPoint.ClinicEndPoint.GetClinicByDoctor + viewModel.DoctorDto!.Id);
+            var schedule = await aPIService.GetByIdAsync(APIEndPoint.ScheduleEndPoint.GetScheduleList + viewModel.DoctorDto!.Id);
+            viewModel.ClinicDto = JsonConvert.DeserializeObject<List<GetClinicDto>>(clinics);
+            viewModel.ScheduleDto = JsonConvert.DeserializeObject<List<ScheduleDto>>(schedule);
+            return View(viewModel);
         }
         public async Task<IActionResult> ChangeActiveStatus(int Id, int ActiveStatus)
         {
@@ -27,22 +33,29 @@ namespace EasyAppointments.Areas.Doctor.Controllers
         }
         private async Task<ViewModelDoctorProfile> GetDoctor(string title)
         {
-            var doctor = new DoctorDto();
-            var doctorIdentifier = HttpContext.Session.GetString("Identifier")!;
-            var jsonData = await aPIService.GetByIdAsync(APIEndPoint.DoctorEndPoint.GetByIdentifier + doctorIdentifier);
-            if (jsonData is not null)
+            var token = HttpContext.Request.Cookies["Token"];
+            if (!string.IsNullOrEmpty(token))
             {
-                doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonData);
-                var viewModel = new ViewModelDoctorProfile
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var role = jwtToken.Claims.FirstOrDefault(c => c.Type == "Role")!.Value;
+                var doctorId = jwtToken.Claims.FirstOrDefault(c => c.Type == "DoctorId")!.Value;
+                var jsonData = await aPIService.GetByIdAsync(APIEndPoint.DoctorEndPoint.GetById + doctorId);
+                if (jsonData is not null)
                 {
-                    doctorDto = doctor,
-
-                    breadcrumbDto = new BreadcrumbDto
+                    var doctor = JsonConvert.DeserializeObject<DoctorDto>(jsonData);
+                    var viewModel = new ViewModelDoctorProfile
                     {
-                        Title = title,
-                    }
-                };
-                return viewModel;
+                        DoctorDto = doctor,
+
+                        BreadcrumbDto = new BreadcrumbDto
+                        {
+                            Title = title,
+                        }
+                    };
+                    return viewModel;
+                }
+                return null!;
             }
             return null!;
         }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
 {
-    public class DoctorAuthenticationRepository(DbEasyAppointmentsContext context):IDoctorAuthenticationRepository
+    public class DoctorAuthenticationRepository(DbEasyAppointmentsContext context) : IDoctorAuthenticationRepository
     {
         public async Task<Doctor> LoginAsync(string doctorIdentifier)
         {
@@ -25,13 +25,23 @@ namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
 
         public async Task<int> RegisterAsync(Doctor doctor)
         {
-            var data = await context.Doctors.FirstOrDefaultAsync(a => a.Email == doctor.Email || a.UserName == doctor.UserName || a.Contact == doctor.Contact);
-            if (data is null)
+            try
             {
-                await context.Doctors.AddAsync(doctor);
-                return await context.SaveChangesAsync();
+                var data = await context.Doctors.FirstOrDefaultAsync(a => a.Email == doctor.Email || a.UserName == doctor.UserName || a.Contact == doctor.Contact);
+                if (data is null)
+                {
+                    await context.Doctors.AddAsync(doctor);
+                    await context.SaveChangesAsync();
+                    return (int)ResponseType.Success;
+                }
+                return (int)ResponseType.RecordAlreadyExist;
+
             }
-            return (int)ResponseType.RecordAlreadyExist;
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

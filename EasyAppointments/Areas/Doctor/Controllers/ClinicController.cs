@@ -1,4 +1,6 @@
-﻿using EasyAppointments.API;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
+using EasyAppointments.API;
 using EasyAppointments.Services.DTOs.AdminDTOs;
 using EasyAppointments.Services.DTOs.AdminDTOs.CityDTOs;
 using EasyAppointments.Services.DTOs.DoctorDTOs.ClinicDTOs;
@@ -58,21 +60,40 @@ namespace EasyAppointments.Areas.Doctor.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> UpdateClinic(int ClinicId)
+        public async Task<IActionResult> UpdateClinic(int clinicId, int doctorId)
         {
-            var jsonData = await aPIService.GetByIdAsync(APIEndPoint.ClinicEndPoint.GetById + ClinicId);
+            var jsonData = await aPIService.GetByIdAsync(APIEndPoint.ClinicEndPoint.GetClinicByIdAndDoctor + "clinicId=" + clinicId + "&doctorId=" + doctorId);
             if (jsonData is not null)
             {
                 var clinic = JsonConvert.DeserializeObject<GetClinicDto>(jsonData);
-                return PartialView("_EditClinic", clinic);
+                return PartialView("/Areas/Doctor/Views/Doctor/_Clinic.cshtml", clinic);
             }
             return View();
         }
-
-        public async Task<IActionResult> DeleteClinic(int ClinicId)
+        public async Task<IActionResult> GetToInsertClinic()
         {
-            var response = await aPIService.DeleteAsync(APIEndPoint.ClinicEndPoint.Delete + ClinicId);
+            var doctorId = GetJwtClaim("DoctorId");
+            var clinic = JsonConvert.DeserializeObject<GetClinicDto>(await aPIService.GetByIdAsync(APIEndPoint.ClinicEndPoint.GetClinicDetails + doctorId));
+            return PartialView("/Areas/Doctor/Views/Doctor/_Clinic.cshtml", clinic);
+        }
+
+        public async Task<IActionResult> DeleteClinic(int clinicId)
+        {
+            var response = await aPIService.DeleteAsync(APIEndPoint.ClinicEndPoint.Delete + clinicId);
             return Json(response);
+        }
+        private string GetJwtClaim(string claimType)
+        {
+
+            var token = HttpContext.Request.Cookies["Token"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var claim = jwtToken.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
+                return claim!;
+            }
+            return null!;
         }
     }
 }

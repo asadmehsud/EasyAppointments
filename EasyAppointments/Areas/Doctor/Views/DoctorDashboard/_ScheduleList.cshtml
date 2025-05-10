@@ -1,0 +1,48 @@
+﻿@model List<EasyAppointments.Services.DTOs.DoctorDTOs.ScheduleDto>
+<div class="dashboard-card w-100">
+	<div class="dashboard-card-head">
+		<div class="header-title">
+			<h5>Clinics &amp; Availability</h5>
+		</div>
+	</div>
+	<div class="dashboard-card-body">
+		@if (Model is null || !Model.Any())
+		{
+			<h5 style="color:darkred">You have not entered schedule details.</h5>
+			<button class="btn btn-outline-primary" onclick="insertSchedule()">Insert</button>
+		}
+		else
+		{
+			@foreach (var item in Model)
+			{
+				<div class="clinic-available mb-0">
+					<div class="clinic-head">
+						<div class="clinic-info">
+							<span class="clinic-img">
+								<img src="/Assets/UserAssets/img/Easy Appointment Logo-01.png" alt="Img">
+							</span>
+							<h6>@item.DayName</h6>
+						</div>
+						<div class="clinic-charge">
+							<span>Rs.@item.AppointmentFee</span>
+						</div>
+					</div>
+					<div class="available-time">
+						<ul>
+							<li>
+								<span>@item.ClinicName :</span>
+								@item.From - @item.To
+							</li>
+						</ul>
+						<div class="apponiment-view d-flex align-items-center">
+							<button class="btn btn-outline-primary" onclick="updateSchedule(@item.Id,@item.DoctorId)" style="margin-right:3px"> <i class="fas fa-edit"></i></button>
+							<button class="btn btn-outline-danger" onclick="deleteSchedule(@item.Id);"><i class="fa fa-trash"></i></button>
+						</div>
+					</div>
+				</div>
+				
+			}
+
+		}
+	</div>
+</div>

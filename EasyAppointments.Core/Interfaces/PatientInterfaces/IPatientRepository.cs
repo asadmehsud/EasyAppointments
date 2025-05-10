@@ -8,7 +8,7 @@ namespace EasyAppointments.Data.Repositories.PatientRepositories.Interfaces
         Task<int> UpdateAsync(Patient patient);
         Task<int> DeleteAsync(Patient patient);
         Task<Patient> GetByIdAsync(int Id);
+        Task<Patient> GetByIdentifierAsync(string identifier);
         Task<List<Patient>> GetAllAsync();
-        Task<Patient> LoginAsync(Patient patient);
     }
 }

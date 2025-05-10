@@ -32,6 +32,7 @@ namespace EasyAppointments
             CreateMap<DoctorLoginDto, Doctor>().ReverseMap();
             CreateMap<BasicDetailsDto, Doctor>().ReverseMap();
             CreateMap<ScheduleDto, Schedule>().ReverseMap();
+            CreateMap<AppointmentDto, Appointment>().ReverseMap();
         }
     }
 }

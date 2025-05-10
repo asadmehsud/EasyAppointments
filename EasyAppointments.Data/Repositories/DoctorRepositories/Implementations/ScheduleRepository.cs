@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyAppointments.Data.Repositories.DoctorRepositories.Implementations
 {
-    public class ScheduleRepository(DbEasyAppointmentsContext context):IScheduleRepository
+    public class ScheduleRepository(DbEasyAppointmentsContext context) : IScheduleRepository
     {
         public async Task<List<Schedule>> GetAllAsync() => await context.Schedules.ToListAsync();
 
         public async Task<Schedule> GetByIdAsync(int id) => await context.Schedules.Where(op => op.Id == id).SingleAsync();
+        public async Task<List<Schedule>> GetByDoctorIdAsync(int doctorId) => await context.Schedules.Where(op => op.DoctorId == doctorId).ToListAsync();
         public async Task<int> DeleteAsync(Schedule schedule)
         {
             context.Schedules.Remove(schedule);

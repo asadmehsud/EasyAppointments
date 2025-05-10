@@ -68,20 +68,20 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         if (action === 'Submittion') {
-                            savePatient();
+                            saveAppointment();
                         } else if (action === 'Deletion') {
                             deleteSpeciality(Id);
                         }
                     }
                 });
             }
-            function savePatient(){
+            function saveAppointment(){
                 debugger;
                 if($("#FrmAppointment").valid()){
                 var frmData = new FormData(document.getElementById('FrmAppointment'));
                 $.ajax({
                 type: 'post',
-                url: '/Patient/Patient/Save',
+                url: '/Patients/Appointment/Save',
                 processData: false,
                 contentType: false,
                 data: frmData,

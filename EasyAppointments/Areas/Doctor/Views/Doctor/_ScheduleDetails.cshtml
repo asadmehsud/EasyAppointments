@@ -1,72 +1,78 @@
 ﻿@model EasyAppointments.Services.DTOs.DoctorDTOs.ScheduleDto
 <form id="FrmSchedule">
-    @Html.HiddenFor(a => a.Id)
-    @Html.HiddenFor(a => a.DoctorId)
-    <div class="setting-title">
-        <h5>Information</h5>
-    </div>
-    <div class="setting-card">
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="form-wrap">
-                    @Html.Label("Select Week Day")
-                    <select class="form-control" id="Day" name="DayId">
-                        <option>Select Day</option>
-                        @foreach (var item in Model.Days!)
-                        {
-                            if (Model.DayId == item.Id)
-                            {
-                                <option selected value="@item.Id">@item.WeekDay</option>
-                            }
-                            <option value="@item.Id">@item.WeekDay</option>
-                        }
-                    </select>
-                    @Html.ValidationMessageFor(a => a.DayId, "", new { @style = "color:red" })
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-wrap">
-                    @Html.Label("Select Clinic")
-                    <select class="form-control" id="Day" name="ClinicId">
-                        <option>Select Clinic</option>
-                        @foreach (var item in Model.Clinics!)
-                        {
-                            if (Model.ClinicId == item.Id)
-                            {
-                                <option selected value="@item.Id">@item.ClinicName</option>
-                            }
-                            <option value="@item.Id">@item.ClinicName</option>
-                        }
-                    </select>
-                    @Html.ValidationMessageFor(a => a.ClinicId, "", new { @style = "color:red" })
-                </div>
-            </div>
+	@Html.HiddenFor(a => a.Id)
+	@Html.HiddenFor(a => a.DoctorId)
+	<div class="setting-title">
+		<h5>Information</h5>
+	</div>
+	<div class="setting-card">
+		<div class="row">
+			<div class="col-lg-4 col-md-6">
+				<div class="form-wrap">
+					@Html.Label("Select Week Day")
+					<select class="form-control" id="Day" name="DayId">
+						<option>Select Day</option>
+						@foreach (var item in Model.Days!)
+						{
+							if (Model.DayId == item.Id)
+							{
+								<option selected value="@item.Id">@item.WeekDay</option>
+							}
+							else
+							{
+								<option value="@item.Id">@item.WeekDay</option>
+							}
+						}
+					</select>
+					@Html.ValidationMessageFor(a => a.DayId, "", new { @style = "color:red" })
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<div class="form-wrap">
+					@Html.Label("Select Clinic")
+					<select class="form-control" id="Day" name="ClinicId">
+						<option>Select Clinic</option>
+						@foreach (var item in Model.Clinics!)
+						{
+							if (Model.ClinicId == item.Id)
+							{
+								<option selected value="@item.Id">@item.ClinicName</option>
+							}
+							else
+							{
+								<option value="@item.Id">@item.ClinicName</option>
+							}
+						}
+					</select>
+					@Html.ValidationMessageFor(a => a.ClinicId, "", new { @style = "color:red" })
+				</div>
+			</div>
 
-            <div class="col-lg-4 col-md-6">
-                <div class="form-wrap">
-                    @Html.LabelFor(a => a.AppointmentFee)
-                    @Html.TextBoxFor(a => a.AppointmentFee, new { @class = "form-control", placeholder = "Enter your Appointment Fee" })
-                    @Html.ValidationMessageFor(a => a.AppointmentFee, "", new { @style = "color:red" })
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-wrap">
-                    @Html.LabelFor(a => a.From)
-                    <input class="form-control" type="time" name="From" />
-                    @Html.ValidationMessageFor(a => a.From, "", new { @style = "color:red" })
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-wrap">
-                    @Html.LabelFor(a => a.To)
-                    <input class="form-control" type="time" name="To" />
-                    @Html.ValidationMessageFor(a => a.From, "", new { @style = "color:red" })
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-btn text-end">
-        <a href="#" class="btn btn-gray">Cancel</a>
-        <button type="button" class="btn btn-primary prime-btn" onclick="showConfirmationDialog('Schedule')">Save Changes</button>
-    </div>
+			<div class="col-lg-4 col-md-6">
+				<div class="form-wrap">
+					@Html.Label("Appointment Fee")
+					@Html.TextBoxFor(a => a.AppointmentFee, new { @class = "form-control", placeholder = "Enter your Appointment Fee" })
+					@Html.ValidationMessageFor(a => a.AppointmentFee, "", new { @style = "color:red" })
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<div class="form-wrap">
+					@Html.LabelFor(a => a.From)
+					<input class="form-control" type="time" name="From" />
+					@Html.ValidationMessageFor(a => a.From, "", new { @style = "color:red" })
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<div class="form-wrap">
+					@Html.LabelFor(a => a.To)
+					<input class="form-control" type="time" name="To" />
+					@Html.ValidationMessageFor(a => a.From, "", new { @style = "color:red" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-btn text-end">
+		<a href="#" class="btn btn-gray">Cancel</a>
+		<button type="button" class="btn btn-primary prime-btn" onclick="showConfirmationDialog('Schedule')">Save Changes</button>
+	</div>
 </form>

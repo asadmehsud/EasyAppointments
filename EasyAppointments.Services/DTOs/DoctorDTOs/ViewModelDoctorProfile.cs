@@ -4,8 +4,9 @@ namespace EasyAppointments.Services.DTOs.DoctorDTOs
 {
     public record ViewModelDoctorProfile
     {
-        public DoctorDto? doctorDto { get; set; }
-        public BreadcrumbDto? breadcrumbDto { get; set; }
-        public List<GetClinicDto>? clinicDto { get; set; }
+        public DoctorDto? DoctorDto { get; set; }
+        public BreadcrumbDto? BreadcrumbDto { get; set; }
+        public List<GetClinicDto>? ClinicDto { get; set; }
+        public List<ScheduleDto>? ScheduleDto { get; set; }
     }
 }

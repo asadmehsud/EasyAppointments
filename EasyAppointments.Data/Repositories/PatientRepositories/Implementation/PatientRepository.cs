@@ -6,9 +6,18 @@ namespace EasyAppointments.Data.Repositories.PatientRepositories.Implementation
 {
     public class PatientRepository(DbEasyAppointmentsContext context) : IPatientRepository
     {
-        public Task<Patient> LoginAsync(Patient patient) => context.Patients.Where(a => a.Contact == patient.Contact && a.Password == patient.Password).FirstOrDefaultAsync()!;
         public async Task<List<Patient>> GetAllAsync() => await context.Patients.ToListAsync();
-        public async Task<Patient> GetByIdAsync(int Id) => await context.Patients.Where(a => a.PatientId == Id).SingleAsync();
+        public async Task<Patient> GetByIdAsync(int Id)
+        {
+            var patient = await context.Patients.SingleOrDefaultAsync(a => a.PatientId == Id);
+            return patient is null ? null! : patient;
+        }
+        public async Task<Patient> GetByIdentifierAsync(string identifier)
+        {
+            var patient = await context.Patients.SingleOrDefaultAsync(a => a.Email == identifier || a.Contact == identifier);
+            return patient is null ? null! : patient;
+        }
+
         public async Task<int> DeleteAsync(Patient patient)
         {
             context.Patients.Remove(patient);
@@ -16,14 +25,29 @@ namespace EasyAppointments.Data.Repositories.PatientRepositories.Implementation
         }
         public async Task<int> SaveAsync(Patient patient)
         {
-            var returnedValue = await context.Patients.AddAsync(patient);
-            await context.SaveChangesAsync();
-            return returnedValue.Entity.PatientId;
+            try
+            {
+                await context.Patients.AddAsync(patient);
+                await context.SaveChangesAsync();
+                return (int)ResponseType.Success;
+            }
+            catch (Exception)
+            {
+                return (int)ResponseType.InternalServerError;
+            }
         }
         public async Task<int> UpdateAsync(Patient patient)
         {
-            context.Patients.Update(patient);
-            return await context.SaveChangesAsync();
+            try
+            {
+                context.Patients.Update(patient);
+                return await context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                return (int)ResponseType.InternalServerError;
+            }
         }
     }
 }

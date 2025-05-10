@@ -1,0 +1,4 @@
+{
+    "ConnectionString": "Server=DESKTOP-EQ55Q8H\\SQLEXPRESS;Database=DbEasyAppointments;TrustServerCertificate=true;Trusted_Connection=True;Connect Timeout=120;",
+    "Token": "my_Api_Jwt_Token_my_Api_Jwt_Token_my_Api_Jwt_Token_my_Api_Jwt_Token"
+}

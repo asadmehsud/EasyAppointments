@@ -7,10 +7,11 @@ using EasyAppointments.Data.Repositories.DoctorRepositories.Implementations;
 using EasyAppointments.Data.Repositories.DoctorRepositories.Interfaces;
 using EasyAppointments.Data.Repositories.PatientRepositories.Implementation;
 using EasyAppointments.Data.Repositories.PatientRepositories.Interfaces;
-using EasyAppointments.Services.AdminServices;
 using EasyAppointments.Services.Authentication;
-using EasyAppointments.Services.DoctorServices;
-using EasyAppointments.Services.PatientServices;
+using EasyAppointments.Services.Services;
+using EasyAppointments.Services.Services.AdminServices;
+using EasyAppointments.Services.Services.DoctorServices;
+using EasyAppointments.Services.Services.PatientServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace EasyAppointments.API.Extensions
@@ -43,17 +44,17 @@ namespace EasyAppointments.API.Extensions
                 .AddScoped<IScheduleRepository, ScheduleRepository>()
                 .AddScoped<AdminAuthenticationService>()
                 .AddScoped<IAdminAuthenticationRepository, AdminAuthenticationRepository>()
-                .AddScoped<CookiesService>()
-                .AddHttpContextAccessor()
                 .AddScoped<PatientAuthenticationService>()
                 .AddScoped<IPatientAuthenticationRepository, PatientAuthenticationRepository>()
                 .AddScoped<DoctorAuthenticationService>()
-                .AddScoped<IDoctorAuthenticationRepository, DoctorAuthenticationRepository>();
-                
+                .AddScoped<IDoctorAuthenticationRepository, DoctorAuthenticationRepository>()
+                .AddScoped<HomePageService>();
+
         }
         public static IServiceCollection AddConnections(this IServiceCollection services, IConfiguration configuration)
         {
-            return services.AddDbContext<DbEasyAppointmentsContext>(options => options.UseSqlServer(configuration["ConnectionString"]));
+            var con = configuration["ConnectionString"];
+            return services.AddDbContext<DbEasyAppointmentsContext>(options => options.UseSqlServer(con));
         }
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
